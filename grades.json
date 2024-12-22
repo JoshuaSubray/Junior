@@ -1,0 +1,22 @@
+{
+    "math": {
+        "entry0": {
+            "name": "Assignment 1",
+            "grade": 90,
+            "weight": 10
+        },
+        "entry1": {
+            "name": "Lab 5",
+            "grade": 50,
+            "weight": 10
+        }
+    },
+
+    "science": {
+        "entry0": {
+            "name": "Lab 1",
+            "grade": 40,
+            "weight": 1
+        }
+    }
+}
