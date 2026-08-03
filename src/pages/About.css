@@ -1,0 +1,11 @@
+.about-intro {
+  margin-bottom: 16px;
+}
+
+.about-sub-heading {
+  font-size: 1.25rem;
+  color: var(--text-h);
+  font-family: var(--heading);
+  font-weight: 500;
+  margin: 24px 0 8px 0;
+}
