@@ -1,13 +1,13 @@
 /** 
-    Class GradeEntry represents a single row of user defined entries.
+    Class `GradeEntry` represents a single row of user defined entries.
 
-    name - Name of the class
+    `name` - Name of the class
 
-    grade - The grade the student recieved
+    `grade` - The grade the student recieved
 
-    weight - The weight of the assessment
+    `weight` - The weight of the assessment
 
-    subEntries - Used for splitting up labs, quizzes, or assignments that have different parts.
+    `subEntries` - Used for splitting up labs, quizzes, or assignments that have different parts.
 
     For example, on the website a user may have input this:
 
@@ -21,41 +21,58 @@
     -------------------------
     ```
 
-    An array of GradeEntry objects can represent all the grades entered for a class.
+    An array of `GradeEntry` objects can represent all the grades entered for a class.
 
-    In the previous example, the array "[row1, row2]" is a representation 
+    In the previous example, the array "`[row1, row2]`" is a representation 
     of all the grades currently entered for the class. This array will grow as more entries are added. 
 
-    GradeEntry is also recursive, GradeEntry objects may contain a list 
-    of other GradeEntry objects to represent sub-entries. For our website, we will probably
+    `GradeEntry` is also recursive, `GradeEntry` objects may contain a list 
+    of other `GradeEntry` objects to represent sub-entries. For our website, we will probably
     only allow users to create a single level of subentries, so no sub-sub-entries 
     or anything beyond that.
+
+    `GradeEntry` permits null values for `name`, `grade`, and `weight`. This is to support 
+    incomplete entries that may become complete later.
     
 */
 class GradeEntry {
-    name: string;
-    grade: number;
-    weight: number;
-    subEntries: null | GradeEntry[];
+    name: string | null;
+    private grade: number | null;
+    private weight: number | null;
+    private subEntries: GradeEntry[] | null;
+    private parent: GradeEntry | null;
 
-    constructor(name: string, grade: number, weight: number, subEntries: null | GradeEntry[]=null) {
+    constructor(name: string | null=null, grade: number | null=null, weight: number | null=null) {
         this.name = name;
         this.grade = grade;
         this.weight = weight;
-        this.subEntries = subEntries;
+        this.subEntries = null;
 
-        if (subEntries != null) {
-            this.calculateSubEntries();
-        }
+        this.parent = null;
     }
 
     /*
         Calculates average of the sub entries and sets grade value.
     */
     private calculateSubEntries() {
-        if (this.subEntries != null) {
-            const avg: number = GradeCalculator.getWeightedAverage(this.subEntries);
-            this.setGrade(avg);
+        if (this.subEntries !== null) {
+            const avg = GradeCalculator.getWeightedAverage(this.subEntries);
+
+            if (avg !== null){
+                this.setGrade(avg);
+            }
+            else {
+                this.grade = null;
+            }
+        }
+    }
+
+    /* 
+        Recalculates parent entries.
+    */
+    private cascadeRecalculate() {
+        if (this.parent !== null) {
+            this.parent.calculateSubEntries();
         }
     }
 
@@ -63,29 +80,86 @@ class GradeEntry {
         Grade setter method. 
     */
     public setGrade(grade: number) {
-        this.grade = grade;
+        this.grade = (grade >= 0) ? grade : 0;
+        this.cascadeRecalculate();
+    }
+
+    /*
+        Weight setter method.
+    */
+    public setWeight(weight: number) {
+        this.weight = (weight >= 0) ? weight : 0;
+        this.cascadeRecalculate();
     }
     
     /*
-        Adding a new subentry. A newly added subentry prompts a recalculation of the grade
+        Name setter method.
+    */
+    public setName(name: string) {
+        this.name = name;
+    }
+
+    /*
+        Grade getter method.
+    */
+    public getGrade() {
+        return this.grade;
+    }
+
+    /*
+        Weight getter method.
+    */
+    public getWeight() {
+        return this.weight;
+    }
+
+    /*
+        Adding a new subentry. A newly added subentry prompts a recalculation of the grade.
     */
     public addSubEntry(entry: GradeEntry) {
-        if (this.subEntries == null) {
+        if (this.subEntries === null) {
             this.subEntries = [entry]
         }
         else {
             this.subEntries.push(entry)
         }
+        entry.parent = this;
         this.calculateSubEntries();
+    }
+
+    /*
+        Removing a subentry. A removed subentry prompts a recalculation of the grade.
+    */
+    public removeSubEntry(entry: GradeEntry) {
+        if (this.subEntries !== null) {
+            const index = this.subEntries.indexOf(entry);
+
+            if (index !== -1) {
+                this.subEntries.splice(index, 1);
+                this.calculateSubEntries();
+            }
+        }
     }
  }
 
 
 /**
- * Class comprises of static methods that perform operations on GradeEntry objects or lists of GradeEntry objects.
+ * Interface to represent a complete grade entry.
+ */
+interface CompleteGradeEntry extends GradeEntry {
+    getGrade(): number;
+    getWeight(): number;
+}
+
+/**
+ * Class comprises of static methods that perform operations on GradeEntry objects or lists of `GradeEntry` objects.
  *
+ * `GradeEntry` objects which are "incomplete", i.e they have both null `grade` and null `weight`, are ignored from calculations.
+ * 
+ * A calculation on an array of `GradeEntry` objects which are all incomplete results in `null` being returned.
  */
 class GradeCalculator {
+    
     /**
     * Calculate the weighted average of `entries`.
     * 
@@ -103,14 +177,19 @@ class GradeCalculator {
     * // 75
     * ```
     * 
-    *  @param entries - An array of GradeEntry objects.
+    *  @param entries - An array of `GradeEntry` objects.
     * 
     *  @returns The weighted average of `entries`.
     */
+    public static getWeightedAverage(entries: GradeEntry[]): number | null {
+        const completedEntries = entries.filter(GradeCalculator.isComplete);
 
-    public static getWeightedAverage(entries: GradeEntry[]): number {
-        const weightedSum = entries.reduce((accumulator, current) => accumulator + (current.grade * current.weight), 0);
-        const sumOfWeights = entries.reduce((accumulator, current) => accumulator + current.weight, 0);
+        const weightedSum = completedEntries.reduce((accumulator, current) => accumulator + (current.getGrade() * current.getWeight()), 0);
+        const sumOfWeights = completedEntries.reduce((accumulator, current) => accumulator + current.getWeight(), 0);
+
+        if (completedEntries.length === 0) {
+            return null;
+        }
 
         if (sumOfWeights === 0) {
             return 0;
@@ -118,6 +197,13 @@ class GradeCalculator {
 
         const average = weightedSum / sumOfWeights;
         return average;
+    }
+
+    /**
+     * Helper for filtering entries. A complete entry is a `GradeEntry` object with a non-null `grade` and `weight` attribute.
+     */
+    private static isComplete(entry: GradeEntry): entry is CompleteGradeEntry {
+        return entry.getGrade() !== null && entry.getWeight() !== null;
     }
 
    /**
@@ -141,20 +227,30 @@ class GradeCalculator {
     * ```
     * @param assessmentWeight The weight of the assessment. 
     * @param targetAverage The target average.
-    * @param entries An array of GradeEntry objects.
+    * @param entries An array of `GradeEntry` objects.
     * @returns The grade of the assessment that is required to achieve `targetAverage`.
     */
-    public static getRequiredAssessmentGrade(assessmentWeight: number,  targetAverage: number, entries: GradeEntry[]): number {
-        const sumOfWeights = entries.reduce((accumulator, current) => accumulator + current.weight, 0);
+    public static getRequiredAssessmentGrade(assessmentWeight: number,  targetAverage: number, entries: GradeEntry[]): number | null {
+        const completedEntries = entries.filter(GradeCalculator.isComplete);
+
+        if (completedEntries.length === 0) {
+            return null;
+        }
+
+        const sumOfWeights = completedEntries.reduce((accumulator, current) => accumulator + current.getWeight()!, 0);
         const currentAverage = GradeCalculator.getWeightedAverage(entries);
 
         if (assessmentWeight === 0) {
             return 0;
         }
 
-        const assessmentGrade = ((sumOfWeights * (targetAverage - currentAverage)) + targetAverage * assessmentWeight) / assessmentWeight;
+        if (currentAverage === null) {
+            return null;
+        }
+
+        const assessmentGrade = ((sumOfWeights * (targetAverage - currentAverage)) + targetAverage * assessmentWeight) 
+        / assessmentWeight;
+
         return assessmentGrade;
     }
 }
-
-
