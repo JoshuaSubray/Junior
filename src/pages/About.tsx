@@ -21,6 +21,12 @@ export default function About() {
         <p>
           Want to help keep Junior free, accessible, and source-available? Consider donating to support the developers and their future endeavors! Every contribution is greatly appreciated.
         </p>
+
+        <h3 className="about-sub-heading">Credits</h3>
+        <p>
+          Front-end Development: Joshua Subray<br/>
+          Back-end Development: Rushi Parmar<br/>
+        </p>
       </div>
     </>
   )
