@@ -5,7 +5,7 @@ import Sidebar from './Sidebar'
 import Ads from './Ads'
 import { GradeProvider } from '../../contexts/GradeContext'
 
-type Page = 'home' | 'about'
+type Page = 'home' | 'about' | 'guide'
 
 interface PageLayoutProps {
   currentPage: Page

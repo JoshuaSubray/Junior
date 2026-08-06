@@ -1,4 +1,4 @@
-type Page = 'home' | 'about'
+type Page = 'home' | 'about' | 'guide'
 
 interface HeaderProps {
   currentPage: Page
@@ -26,6 +26,12 @@ export default function Header({ currentPage, onNavigate }: HeaderProps) {
           onClick={() => onNavigate('about')}
         >
           About
+        </button>
+        <button
+          className={`nav-link ${currentPage === 'guide' ? 'active' : ''}`}
+          onClick={() => onNavigate('guide')}
+        >
+          Guide
         </button>
       </nav>
     </header>

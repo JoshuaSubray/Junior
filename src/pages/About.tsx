@@ -9,9 +9,6 @@ export default function About() {
           <strong>Junior</strong> is an intuitive, web-based GPA planning and grade tracking application made by students, for students.
         </p>
 
-        <h3 className="about-sub-heading">How To Use</h3>
-        <p>TBA.</p>
-
         <h3 className="about-sub-heading">Source Code</h3>
         <p>
           Our code is completely source-available on GitHub, however protected under the <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener noreferrer">CC BY-NC-ND 4.0</a> license. Please contact us if you wish to use our code for any reason.
