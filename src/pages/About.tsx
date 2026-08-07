@@ -23,6 +23,7 @@ export default function About() {
         <p>
           Front-end Development: Joshua Subray<br/>
           Back-end Development: Rushi Parmar<br/>
+          Product Consultant: Christopher Alzate-Valdez<br/>
         </p>
       </div>
     </>
