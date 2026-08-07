@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { useGradeContext } from '../../contexts/GradeContext';
 
 export default function Sidebar() {
-  const { semesters, activeSemesterId, addSemester, removeSemester, setActiveSemester } = useGradeContext();
+  const { semesters, activeSemesterId, addSemester, updateSemester, removeSemester, setActiveSemester } = useGradeContext();
+  const [editingSemesterId, setEditingSemesterId] = useState<number | null>(null);
 
   return (
     <aside className="semester" id="semester">
@@ -32,12 +34,66 @@ export default function Sidebar() {
                   border: activeSemesterId === semester.id ? '2px solid var(--accent)' : '1px solid var(--border)', 
                   borderRadius: '4px', 
                   backgroundColor: 'var(--code-bg)',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  gap: '8px'
                 }}
               >
-                <span style={{ color: 'var(--text-h)', fontWeight: activeSemesterId === semester.id ? 'bold' : 'normal' }}>
-                  Semester {semester.id}
-                </span>
+                {editingSemesterId === semester.id ? (
+                  <input 
+                    value={semester.name}
+                    onChange={(e) => updateSemester(semester.id, { name: e.target.value })}
+                    onClick={(e) => e.stopPropagation()}
+                    onBlur={() => setEditingSemesterId(null)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        setEditingSemesterId(null);
+                      }
+                    }}
+                    autoFocus
+                    style={{ 
+                      background: 'var(--bg)', 
+                      border: '1px solid var(--accent)', 
+                      borderRadius: '4px',
+                      color: 'var(--text-main)', 
+                      padding: '4px',
+                      fontSize: 'inherit',
+                      outline: 'none',
+                      width: '100%'
+                    }}
+                  />
+                ) : (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, overflow: 'hidden' }}>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setEditingSemesterId(semester.id);
+                      }}
+                      style={{ 
+                        background: 'transparent', 
+                        border: 'none', 
+                        cursor: 'pointer', 
+                        color: 'var(--text-main)',
+                        opacity: 0.6,
+                        padding: '2px 4px',
+                        fontSize: '12px'
+                      }}
+                      title="Rename"
+                    >
+                      >
+                    </button>
+                    <span 
+                      style={{ 
+                        color: 'var(--text-h)', 
+                        fontWeight: activeSemesterId === semester.id ? 'bold' : 'normal',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis'
+                      }}
+                    >
+                      {semester.name}
+                    </span>
+                  </div>
+                )}
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();
