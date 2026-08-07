@@ -79,7 +79,7 @@ export default function Sidebar() {
                       }}
                       title="Rename"
                     >
-                      >
+                      W
                     </button>
                     <span 
                       style={{ 
