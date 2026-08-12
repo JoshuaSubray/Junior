@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useGradeContext } from '../../contexts/GradeContext';
+import RemoveButton from '../common/RemoveButton';
 
 export default function Sidebar() {
   const { semesters, activeSemesterId, addSemester, updateSemester, removeSemester, setActiveSemester } = useGradeContext();
@@ -9,10 +10,10 @@ export default function Sidebar() {
     <aside className="semester" id="semester">
       <h2 className="section-title">Semesters</h2>
       <div className="section-content">
-        <div style={{ marginBottom: '16px' }}>
-          <button 
-            onClick={addSemester} 
-            style={{ width: '100%', padding: '8px', cursor: 'pointer', background: 'var(--code-bg)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text-h)' }}
+        <div className="sidebar-add-wrapper">
+          <button
+            onClick={addSemester}
+            className="sidebar-add-btn"
           >
             + Add Semester
           </button>
@@ -21,25 +22,15 @@ export default function Sidebar() {
         {semesters.length === 0 ? (
           <p>No semesters yet.</p>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div className="sidebar-list">
             {semesters.map(semester => (
-              <div 
-                key={semester.id} 
+              <div
+                key={semester.id}
                 onClick={() => setActiveSemester(semester.id)}
-                style={{ 
-                  display: 'flex', 
-                  justifyContent: 'space-between', 
-                  alignItems: 'center', 
-                  padding: '12px', 
-                  border: activeSemesterId === semester.id ? '2px solid var(--accent)' : '1px solid var(--border)', 
-                  borderRadius: '4px', 
-                  backgroundColor: 'var(--code-bg)',
-                  cursor: 'pointer',
-                  gap: '8px'
-                }}
+                className={`sidebar-item${activeSemesterId === semester.id ? ' active' : ''}`}
               >
                 {editingSemesterId === semester.id ? (
-                  <input 
+                  <input
                     value={semester.name}
                     onChange={(e) => updateSemester(semester.id, { name: e.target.value })}
                     onClick={(e) => e.stopPropagation()}
@@ -50,59 +41,36 @@ export default function Sidebar() {
                       }
                     }}
                     autoFocus
-                    style={{ 
-                      background: 'var(--bg)', 
-                      border: '1px solid var(--accent)', 
-                      borderRadius: '4px',
-                      color: 'var(--text-main)', 
-                      padding: '4px',
-                      fontSize: 'inherit',
-                      outline: 'none',
-                      width: '100%'
-                    }}
+                    className="sidebar-rename-input"
                   />
                 ) : (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, overflow: 'hidden' }}>
+                  <div className="sidebar-name-row">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         setEditingSemesterId(semester.id);
                       }}
-                      style={{ 
-                        background: 'transparent', 
-                        border: 'none', 
-                        cursor: 'pointer', 
-                        color: 'var(--text-main)',
-                        opacity: 0.6,
-                        padding: '2px 4px',
-                        fontSize: '12px'
-                      }}
+                      className="sidebar-rename-btn"
                       title="Rename"
                     >
-                      W
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 20h9"></path>
+                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                      </svg>
                     </button>
-                    <span 
-                      style={{ 
-                        color: 'var(--text-h)', 
-                        fontWeight: activeSemesterId === semester.id ? 'bold' : 'normal',
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis'
-                      }}
-                    >
+                    <span className={`sidebar-name${activeSemesterId === semester.id ? ' active' : ''}`}>
                       {semester.name}
                     </span>
                   </div>
                 )}
-                <button 
+                <RemoveButton 
+                  className="sidebar-remove-btn"
                   onClick={(e) => {
                     e.stopPropagation();
                     removeSemester(semester.id);
                   }} 
-                  style={{ padding: '4px', cursor: 'pointer', border: 'none', background: 'transparent', color: 'red', fontWeight: 'bold' }}
-                >
-                  X
-                </button>
+                  title="Remove Semester"
+                />
               </div>
             ))}
           </div>

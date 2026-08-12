@@ -1,106 +1,153 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
 
-export interface Entry {
-  id: string;             // crypto.randomUUID().
-  courseId: string;       // Foreign key to parent course.
-  categoryId?: string;    // Foreign key to category (e.g. Quizzes, Assignments, etc.).
+export interface Item {
+  id: string;
+  name: string;
+  grade: number;            // Direct percentage.
+  weightOverride?: number;  // Overrides percentage set by auto-split.
+  isExtraCredit: boolean;   // If true, contributes to grade numerator only (bonus points).
+}
 
-  name: string;           // e.g. Assignment 1, Midterm
-  pointsEarned: number;   // Points earned.
-  pointsMax: number;      // Total possible points.
-  weight: number;         // Percentage weight.
-  isExtraCredit: boolean; // If true, bonus points added to numerator only.
+export interface Category {
+  id: string;
+  name: string;
+  totalWeight: number;  // Percentage of the course's final grade this category is worth.
+  items: Item[];
+}
+
+export interface Course {
+  id: string;
+  name: string;
+  categories: Category[];
 }
 
 export interface Semester {
   id: number;
   name: string;
-  entries: Entry[];
+  courses: Course[];
 }
 
 interface GradeContextType {
   semesters: Semester[];
   activeSemesterId: number | null;
+  // Semester CRUD.
   addSemester: () => void;
   updateSemester: (id: number, updates: Partial<Semester>) => void;
   removeSemester: (id: number) => void;
   setActiveSemester: (id: number) => void;
-  addEntry: () => void;
-  updateEntry: (id: string, updates: Partial<Entry>) => void;
-  removeEntry: (id: string) => void;
+  // Course CRUD.
+  addCourse: () => void;
+  updateCourse: (courseId: string, updates: Partial<Course>) => void;
+  removeCourse: (courseId: string) => void;
+  // Category CRUD.
+  addCategory: (courseId: string) => void;
+  updateCategory: (courseId: string, categoryId: string, updates: Partial<Category>) => void;
+  removeCategory: (courseId: string, categoryId: string) => void;
+  // Item CRUD.
+  addItem: (courseId: string, categoryId: string) => void;
+  updateItem: (courseId: string, categoryId: string, itemId: string, updates: Partial<Item>) => void;
+  removeItem: (courseId: string, categoryId: string, itemId: string) => void;
 }
 
 const GradeContext = createContext<GradeContextType | undefined>(undefined);
 
 export function GradeProvider({ children }: { children: ReactNode }) {
-  const [semesters, setSemesters] = useState<Semester[]>([{ id: 1, name: 'Semester 1', entries: [] }]);
+  const [semesters, setSemesters] = useState<Semester[]>([{ id: 1, name: 'Semester 1', courses: [] }]);
   const [activeSemesterId, setActiveSemesterId] = useState<number | null>(1);
   const [nextSemesterId, setNextSemesterId] = useState(2);
 
+  // Semester CRUD.
+
   const addSemester = () => {
-    const newSemester = { id: nextSemesterId, name: 'Untitled Semester', entries: [] };
-    setSemesters([...semesters, newSemester]);
+    const newSemester: Semester = { id: nextSemesterId, name: 'Untitled Semester', courses: [] };
+    setSemesters(prev => [...prev, newSemester]);
     setActiveSemesterId(newSemester.id);
-    setNextSemesterId(nextSemesterId + 1);
+    setNextSemesterId(prev => prev + 1);
   };
 
   const updateSemester = (id: number, updates: Partial<Semester>) => {
-    setSemesters(semesters.map(s => s.id === id ? { ...s, ...updates } : s));
+    setSemesters(prev => prev.map(s => s.id === id ? { ...s, ...updates } : s));
   };
 
   const removeSemester = (id: number) => {
-    setSemesters(semesters.filter(s => s.id !== id));
-    if (activeSemesterId === id) {
-      setActiveSemesterId(null);
-    }
+    setSemesters(prev => prev.filter(s => s.id !== id));
+    if (activeSemesterId === id) setActiveSemesterId(null);
   };
 
-  const setActiveSemester = (id: number) => {
-    setActiveSemesterId(id);
+  const setActiveSemester = (id: number) => setActiveSemesterId(id);
+
+  // Shared helpers for nested updates.
+
+  const modifyActiveSemester = (fn: (courses: Course[]) => Course[]) => {
+    setSemesters(prev => prev.map(s =>
+      s.id === activeSemesterId ? { ...s, courses: fn(s.courses) } : s
+    ));
   };
 
-  const addEntry = () => {
+  const modifyCourse = (courseId: string, fn: (cats: Category[]) => Category[]) => {
+    modifyActiveSemester(courses =>
+      courses.map(c => c.id === courseId ? { ...c, categories: fn(c.categories) } : c)
+    );
+  };
+
+  const modifyCategory = (courseId: string, categoryId: string, fn: (items: Item[]) => Item[]) => {
+    modifyCourse(courseId, cats =>
+      cats.map(cat => cat.id === categoryId ? { ...cat, items: fn(cat.items) } : cat)
+    );
+  };
+
+  // Course CRUD.
+
+  const addCourse = () => {
     if (activeSemesterId === null) return;
-    setSemesters(semesters.map(s => {
-      if (s.id === activeSemesterId) {
-        return {
-          ...s,
-          entries: [...s.entries, {
-            id: crypto.randomUUID(),
-            courseId: '',
-            name: '',
-            pointsEarned: 0,
-            pointsMax: 100,
-            weight: 0,
-            isExtraCredit: false
-          }]
-        };
-      }
-      return s;
-    }));
+    const newCourse: Course = { id: crypto.randomUUID(), name: '', categories: [] };
+    modifyActiveSemester(courses => [...courses, newCourse]);
   };
 
-  const updateEntry = (entryId: string, updates: Partial<Entry>) => {
+  const updateCourse = (courseId: string, updates: Partial<Course>) => {
     if (activeSemesterId === null) return;
-    setSemesters(semesters.map(s => {
-      if (s.id === activeSemesterId) {
-        return {
-          ...s,
-          entries: s.entries.map(e => e.id === entryId ? { ...e, ...updates } : e)
-        };
-      }
-      return s;
-    }));
+    modifyActiveSemester(courses =>
+      courses.map(c => c.id === courseId ? { ...c, ...updates } : c)
+    );
   };
 
-  const removeEntry = (entryId: string) => {
+  const removeCourse = (courseId: string) => {
     if (activeSemesterId === null) return;
-    setSemesters(semesters.map(s => {
-      if (s.id === activeSemesterId) {
-        return { ...s, entries: s.entries.filter(e => e.id !== entryId) };
-      }
-      return s;
-    }));
+    modifyActiveSemester(courses => courses.filter(c => c.id !== courseId));
+  };
+
+  // Category CRUD.
+
+  const addCategory = (courseId: string) => {
+    const newCat: Category = { id: crypto.randomUUID(), name: '', totalWeight: 0, items: [] };
+    modifyCourse(courseId, cats => [...cats, newCat]);
+  };
+
+  const updateCategory = (courseId: string, categoryId: string, updates: Partial<Category>) => {
+    modifyCourse(courseId, cats =>
+      cats.map(cat => cat.id === categoryId ? { ...cat, ...updates } : cat)
+    );
+  };
+
+  const removeCategory = (courseId: string, categoryId: string) => {
+    modifyCourse(courseId, cats => cats.filter(cat => cat.id !== categoryId));
+  };
+
+  // Item CRUD.
+
+  const addItem = (courseId: string, categoryId: string) => {
+    const newItem: Item = { id: crypto.randomUUID(), name: '', grade: 0, isExtraCredit: false };
+    modifyCategory(courseId, categoryId, items => [...items, newItem]);
+  };
+
+  const updateItem = (courseId: string, categoryId: string, itemId: string, updates: Partial<Item>) => {
+    modifyCategory(courseId, categoryId, items =>
+      items.map(item => item.id === itemId ? { ...item, ...updates } : item)
+    );
+  };
+
+  const removeItem = (courseId: string, categoryId: string, itemId: string) => {
+    modifyCategory(courseId, categoryId, items => items.filter(item => item.id !== itemId));
   };
 
   return (
@@ -112,9 +159,15 @@ export function GradeProvider({ children }: { children: ReactNode }) {
         updateSemester,
         removeSemester,
         setActiveSemester,
-        addEntry,
-        updateEntry,
-        removeEntry,
+        addCourse,
+        updateCourse,
+        removeCourse,
+        addCategory,
+        updateCategory,
+        removeCategory,
+        addItem,
+        updateItem,
+        removeItem,
       }}
     >
       {children}

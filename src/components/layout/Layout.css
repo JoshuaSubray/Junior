@@ -1,0 +1,248 @@
+/* Main application layout container. */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Header container stylings. */
+.header {
+  width: 100%;
+  border-bottom: 2px solid var(--border);
+  padding: 24px 32px;
+  background-color: var(--bg);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-brand {
+  text-align: left;
+}
+
+.header-title {
+  font-family: 'Minecraftia', sans-serif;
+  font-size: 2.8rem;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -1.5px;
+  color: var(--text-h);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.header-title:hover {
+  opacity: 0.85;
+}
+
+.header-subtitle {
+  font-size: 1.05rem;
+  color: var(--text);
+  margin-top: 6px;
+  margin-bottom: 0;
+}
+
+/* Navbar navigation */
+.navbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text);
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.nav-link:hover {
+  color: var(--text-h);
+  background-color: var(--code-bg);
+}
+
+.nav-link.active {
+  color: var(--accent);
+  background-color: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+}
+
+/* Three-column middle section. */
+.app-body {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Semester container. */
+.semester {
+  width: 280px;
+  min-width: 240px;
+  border-right: 2px solid var(--border);
+  padding: 24px;
+  background-color: var(--code-bg);
+  text-align: left;
+  box-sizing: border-box;
+}
+
+/* Sidebar add-semester button wrapper. */
+.sidebar-add-wrapper {
+  margin-bottom: 16px;
+}
+
+/* Button to add a new semester. */
+.sidebar-add-btn {
+  width: 100%;
+  padding: 8px;
+  cursor: pointer;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-h);
+}
+
+/* List of semester items. */
+.sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Individual semester row. */
+.sidebar-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background-color: var(--code-bg);
+  cursor: pointer;
+  gap: 8px;
+}
+
+/* Active/selected semester row. */
+.sidebar-item.active {
+  border: 2px solid var(--accent);
+}
+
+/* Inline rename input shown when editing a semester name. */
+.sidebar-rename-input {
+  background: var(--bg);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  color: var(--text-main);
+  padding: 4px;
+  font-size: inherit;
+  outline: none;
+  width: 100%;
+}
+
+/* Row containing the pencil/rename icon and semester name text. */
+.sidebar-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Small rename (pencil) button. */
+.sidebar-rename-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-main);
+  opacity: 0.6;
+  padding: 2px 4px;
+  font-size: 12px;
+}
+
+/* Semester name label. */
+.sidebar-name {
+  color: var(--text-h);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Bold variant for the active semester name. */
+.sidebar-name.active {
+  font-weight: bold;
+}
+
+/* Grades container. */
+.main {
+  flex: 1;
+  padding: 32px;
+  background-color: var(--bg);
+  text-align: left;
+  min-width: 0; /* Ensures flex container does not overflow. */
+  box-sizing: border-box;
+}
+
+/* Advertisements container. */
+.ads {
+  width: 260px;
+  min-width: 220px;
+  border-left: 2px solid var(--border);
+  padding: 24px;
+  background-color: var(--code-bg);
+  text-align: left;
+  box-sizing: border-box;
+}
+
+
+
+/* Footer container. */
+.footer {
+  width: 100%;
+  border-top: 2px solid var(--border);
+  padding: 20px 24px;
+  background-color: var(--bg);
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+/* Responsive adjustments for mobile view. */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+  }
+  
+  .navbar {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .app-body {
+    flex-direction: column;
+  }
+  
+  .semester {
+    width: 100%;
+    border-right: none;
+    border-bottom: 2px solid var(--border);
+  }
+  
+  .ads {
+    width: 100%;
+    border-left: none;
+    border-top: 2px solid var(--border);
+  }
+}

@@ -4,6 +4,7 @@ import Footer from './Footer'
 import Sidebar from './Sidebar'
 import Ads from './Ads'
 import { GradeProvider } from '../../contexts/GradeContext'
+import './Layout.css'
 
 type Page = 'home' | 'about' | 'guide'
 

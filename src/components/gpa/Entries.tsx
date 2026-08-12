@@ -1,8 +1,32 @@
-import { useGradeContext } from '../../contexts/GradeContext';
-import './Entries.css';
+import { useState } from 'react';
+import { useGradeContext, type Course } from '../../contexts/GradeContext';
+import ClassModal from './ClassModal';
+import RemoveButton from '../common/RemoveButton';
+import './GPA.css';
+
+// Calculate course grade helper.
+function calculateCourseGrade(course: Course): string {
+  let totalPoints = 0;
+  
+  course.categories.forEach(category => {
+    if (category.items.length === 0) return;
+    
+    // Auto-split weight.
+    const autoWeight = category.totalWeight / category.items.length;
+    
+    category.items.forEach(item => {
+      const effectiveWeight = item.weightOverride !== undefined ? item.weightOverride : autoWeight;
+      // Grade is a direct percentage. Multiply by weight to get points.
+      totalPoints += (item.grade / 100) * effectiveWeight;
+    });
+  });
+
+  return totalPoints.toFixed(2) + '%';
+}
 
 export default function Entries() {
-  const { semesters, activeSemesterId, addEntry, updateEntry, removeEntry } = useGradeContext();
+  const { semesters, activeSemesterId, addCourse, updateCourse, removeCourse } = useGradeContext();
+  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
 
   const activeSemester = semesters.find(s => s.id === activeSemesterId);
 
@@ -14,88 +38,62 @@ export default function Entries() {
     );
   }
 
-  const entries = activeSemester.entries;
+  const courses = activeSemester.courses;
+  const selectedCourse = courses.find(c => c.id === selectedCourseId) || null;
 
   return (
     <div className="entries-container">
-      <div className="entries-actions">
-        <button className="entries-add-btn" onClick={addEntry}>
-          + Add Entry
-        </button>
-      </div>
-      
-      {entries.length === 0 ? (
-        <p>No entries yet for this semester. Click + to add one.</p>
-      ) : (
-        <div className="entries-list">
-          {entries.map(entry => (
-            <div key={entry.id} className="entry-card">
-              <div className="entry-header">
-                <span className="entry-title">{entry.name || 'Untitled Entry'}</span>
-                <button 
-                  className="entry-remove-btn"
-                  onClick={() => removeEntry(entry.id)} 
-                >
-                  X
-                </button>
-              </div>
-              
-              <div className="entry-inputs-row">
-                <label className="entry-label">
-                  Name
-                  <input 
-                    type="text" 
-                    value={entry.name} 
-                    onChange={e => updateEntry(entry.id, { name: e.target.value })} 
-                    className="entry-input"
-                    placeholder="e.g. Assignment 1"
-                  />
-                </label>
-                
-                <label className="entry-label">
-                  Earned Points
-                  <input 
-                    type="number" 
-                    value={entry.pointsEarned} 
-                    onChange={e => updateEntry(entry.id, { pointsEarned: parseFloat(e.target.value) || 0 })} 
-                    className="entry-input"
-                  />
-                </label>
-                
-                <label className="entry-label">
-                  Max Points
-                  <input 
-                    type="number" 
-                    value={entry.pointsMax} 
-                    onChange={e => updateEntry(entry.id, { pointsMax: parseFloat(e.target.value) || 0 })} 
-                    className="entry-input"
-                  />
-                </label>
-                
-                <label className="entry-label">
-                  Weight (%)
-                  <input 
-                    type="number" 
-                    value={entry.weight} 
-                    onChange={e => updateEntry(entry.id, { weight: parseFloat(e.target.value) || 0 })} 
-                    className="entry-input"
-                  />
-                </label>
-              </div>
-
-              <div className="entry-checkboxes-row">
-                <label className="entry-checkbox-label">
-                  <input 
-                    type="checkbox" 
-                    checked={entry.isExtraCredit}
-                    onChange={e => updateEntry(entry.id, { isExtraCredit: e.target.checked })}
-                  />
-                  Extra Credit
-                </label>
+      <div className="course-list">
+        {courses.map(course => (
+          <div 
+            key={course.id} 
+            className="course-row"
+            onClick={() => setSelectedCourseId(course.id)}
+          >
+            <div className="course-row-left">
+              <input
+                type="text"
+                className="course-title-input"
+                value={course.name}
+                onChange={(e) => updateCourse(course.id, { name: e.target.value })}
+                onClick={(e) => e.stopPropagation()}
+                placeholder="Untitled Class (e.g. MATH 101)"
+              />
+              <div className="course-stats">
+                <span>{course.categories.length} Categories</span>
+                <span className="stats-separator">•</span>
+                <span>{course.categories.reduce((acc, cat) => acc + cat.items.length, 0)} Items</span>
               </div>
             </div>
-          ))}
-        </div>
+            
+            <div className="course-row-right">
+              <div className="course-grade-chip">
+                <span className="grade-value">{calculateCourseGrade(course)}</span>
+              </div>
+              <RemoveButton 
+                className="course-remove-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  removeCourse(course.id);
+                  if (selectedCourseId === course.id) setSelectedCourseId(null);
+                }}
+                title="Remove Class"
+              />
+            </div>
+          </div>
+        ))}
+
+        <button className="course-row add-course-btn" onClick={addCourse}>
+          + Add Class
+        </button>
+      </div>
+
+      {selectedCourse && (
+        <ClassModal
+          isOpen={!!selectedCourse}
+          onClose={() => setSelectedCourseId(null)}
+          course={selectedCourse}
+        />
       )}
     </div>
   );
