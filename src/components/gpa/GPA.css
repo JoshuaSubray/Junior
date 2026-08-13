@@ -199,6 +199,33 @@
   min-width: 150px;
 }
 
+/* Inline edit display using pencil button */
+.item-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 150px;
+}
+
+.item-name-display {
+  color: var(--text-h);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.item-name-edit-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-main);
+  opacity: 0.6;
+  padding: 2px 4px;
+  font-size: 12px;
+}
+
 .item-grade-wrapper {
   display: flex;
   align-items: center;

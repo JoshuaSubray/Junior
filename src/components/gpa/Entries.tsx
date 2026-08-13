@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useGradeContext, type Course } from '../../contexts/GradeContext';
 import ClassModal from './ClassModal';
 import RemoveButton from '../common/RemoveButton';
+import Edit from '../common/Edit';
 import './GPA.css';
 
 // Calculate course grade helper.
@@ -51,13 +52,12 @@ export default function Entries() {
             onClick={() => setSelectedCourseId(course.id)}
           >
             <div className="course-row-left">
-              <input
-                type="text"
-                className="course-title-input"
+              <Edit
                 value={course.name}
-                onChange={(e) => updateCourse(course.id, { name: e.target.value })}
-                onClick={(e) => e.stopPropagation()}
+                onChange={(v) => updateCourse(course.id, { name: v })}
                 placeholder="Untitled Class (e.g. MATH 101)"
+                stopPropagationOnClick={true}
+                inputClassName="course-title-input"
               />
               <div className="course-stats">
                 <span>{course.categories.length} Categories</span>

@@ -57,7 +57,6 @@ export function GradeProvider({ children }: { children: ReactNode }) {
   const [nextSemesterId, setNextSemesterId] = useState(2);
 
   // Semester CRUD.
-
   const addSemester = () => {
     const newSemester: Semester = { id: nextSemesterId, name: 'Untitled Semester', courses: [] };
     setSemesters(prev => [...prev, newSemester]);
@@ -77,7 +76,6 @@ export function GradeProvider({ children }: { children: ReactNode }) {
   const setActiveSemester = (id: number) => setActiveSemesterId(id);
 
   // Shared helpers for nested updates.
-
   const modifyActiveSemester = (fn: (courses: Course[]) => Course[]) => {
     setSemesters(prev => prev.map(s =>
       s.id === activeSemesterId ? { ...s, courses: fn(s.courses) } : s
@@ -97,7 +95,6 @@ export function GradeProvider({ children }: { children: ReactNode }) {
   };
 
   // Course CRUD.
-
   const addCourse = () => {
     if (activeSemesterId === null) return;
     const newCourse: Course = { id: crypto.randomUUID(), name: '', categories: [] };
@@ -117,7 +114,6 @@ export function GradeProvider({ children }: { children: ReactNode }) {
   };
 
   // Category CRUD.
-
   const addCategory = (courseId: string) => {
     const newCat: Category = { id: crypto.randomUUID(), name: '', totalWeight: 0, items: [] };
     modifyCourse(courseId, cats => [...cats, newCat]);
@@ -134,7 +130,6 @@ export function GradeProvider({ children }: { children: ReactNode }) {
   };
 
   // Item CRUD.
-
   const addItem = (courseId: string, categoryId: string) => {
     const newItem: Item = { id: crypto.randomUUID(), name: '', grade: 0, isExtraCredit: false };
     modifyCategory(courseId, categoryId, items => [...items, newItem]);

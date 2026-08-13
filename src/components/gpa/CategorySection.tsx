@@ -1,5 +1,6 @@
 import { useGradeContext, type Category } from '../../contexts/GradeContext';
 import RemoveButton from '../common/RemoveButton';
+import Edit from '../common/Edit';
 import './GPA.css';
 
 interface CategorySectionProps {
@@ -19,12 +20,12 @@ export default function CategorySection({ courseId, category }: CategorySectionP
     <div className="category-section">
       <div className="category-header">
         <div className="category-title-area">
-          <input
-            type="text"
-            className="category-name-input"
+          <Edit
             value={category.name}
-            onChange={(e) => updateCategory(courseId, category.id, { name: e.target.value })}
+            onChange={(v) => updateCategory(courseId, category.id, { name: v })}
             placeholder="Category Name (e.g. Assignments)"
+            inputClassName="category-name-input"
+            stopPropagationOnClick={false}
           />
           <div className="category-weight">
             <label>
@@ -56,17 +57,15 @@ export default function CategorySection({ courseId, category }: CategorySectionP
       </div>
 
       <div className="category-items">
-        {category.items.length === 0 ? (
+            {category.items.length === 0 ? (
           <p className="category-empty-text">No items yet. Add one below.</p>
         ) : (
           category.items.map((item, index) => (
             <div key={item.id} className="item-row">
               <span className="item-number">{index + 1}.</span>
-              <input
-                type="text"
-                className="item-name-input"
+              <Edit
                 value={item.name}
-                onChange={(e) => updateItem(courseId, category.id, item.id, { name: e.target.value })}
+                onChange={(v) => updateItem(courseId, category.id, item.id, { name: v })}
                 placeholder="Item Name"
               />
               <div className="item-grade-wrapper">
