@@ -1,5 +1,5 @@
 import { useGradeContext, type Category } from '../../contexts/GradeContext';
-import RemoveButton from '../common/RemoveButton';
+import Delete from '../common/Delete';
 import Edit from '../common/Edit';
 import './GPA.css';
 
@@ -49,10 +49,10 @@ export default function CategorySection({ courseId, category }: CategorySectionP
             </label>
           </div>
         </div>
-        <RemoveButton 
-          className="category-remove-btn" 
+        <Delete 
+          className="category-delete-btn" 
           onClick={() => removeCategory(courseId, category.id)}
-          title="Remove Category"
+          title="Delete Category"
         />
       </div>
 
@@ -96,10 +96,10 @@ export default function CategorySection({ courseId, category }: CategorySectionP
                 Bonus
               </label>
 
-              <RemoveButton
-                className="item-remove-btn"
+              <Delete
+                className="item-delete-btn"
                 onClick={() => removeItem(courseId, category.id, item.id)}
-                title="Remove Item"
+                title="Delete Item"
               />
             </div>
           ))

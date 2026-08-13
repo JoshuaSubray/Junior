@@ -217,13 +217,7 @@
 }
 
 .item-name-edit-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
   color: var(--text-main);
-  opacity: 0.6;
-  padding: 2px 4px;
-  font-size: 12px;
 }
 
 .item-grade-wrapper {
@@ -264,7 +258,7 @@
   cursor: pointer;
 }
 
-.item-remove-btn {
+.item-delete-btn {
   font-size: 1.2rem;
 }
 
@@ -289,6 +283,49 @@
   flex-direction: column;
   gap: 16px;
   height: 100%;
+}
+
+.class-modal-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.summary-stat {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 88px;
+  justify-content: center;
+}
+
+.summary-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.summary-value {
+  font-size: 1.6rem;
+  line-height: 1.1;
+  color: var(--text-h);
+}
+
+.summary-grade {
+  background: linear-gradient(135deg, var(--bg), var(--code-bg));
+}
+
+.summary-average {
+  background: linear-gradient(135deg, rgba(170, 59, 255, 0.06), var(--bg));
+}
+
+.summary-gpa {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), var(--bg));
 }
 
 .class-modal-empty {

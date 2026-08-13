@@ -36,7 +36,7 @@ export default function Edit({ value, onChange, placeholder = '', className = ''
 		<div className={`item-name-row ${className}`}>
 			<button
 				type="button"
-				className="item-name-edit-btn"
+				className="icon-action-btn item-name-edit-btn"
 				title="Rename"
 				onClick={(e) => {
 					if (stopPropagationOnClick) e.stopPropagation();

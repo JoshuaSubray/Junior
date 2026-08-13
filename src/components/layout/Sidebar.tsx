@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useGradeContext } from '../../contexts/GradeContext';
-import RemoveButton from '../common/RemoveButton';
+import Delete from '../common/Delete';
 
 export default function Sidebar() {
   const { semesters, activeSemesterId, addSemester, updateSemester, removeSemester, setActiveSemester } = useGradeContext();
@@ -50,7 +50,7 @@ export default function Sidebar() {
                         e.stopPropagation();
                         setEditingSemesterId(semester.id);
                       }}
-                      className="sidebar-rename-btn"
+                      className="icon-action-btn sidebar-rename-btn"
                       title="Rename"
                     >
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -63,13 +63,13 @@ export default function Sidebar() {
                     </span>
                   </div>
                 )}
-                <RemoveButton 
-                  className="sidebar-remove-btn"
+                <Delete 
+                  className="sidebar-delete-btn"
                   onClick={(e) => {
                     e.stopPropagation();
                     removeSemester(semester.id);
                   }} 
-                  title="Remove Semester"
+                  title="Delete Semester"
                 />
               </div>
             ))}

@@ -57,7 +57,7 @@
   flex: 1;
 }
 
-.common-remove-btn {
+.common-delete-btn {
   background: transparent;
   border: none;
   color: var(--text);
@@ -71,10 +71,26 @@
   justify-content: center;
 }
 
-.common-remove-btn:hover {
+.common-delete-btn:hover {
   color: red;
 }
 
-.common-remove-btn:active {
+.common-delete-btn:active {
   transform: scale(0.9);
+}
+
+.icon-action-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text);
+  opacity: 0.6;
+  padding: 2px 4px;
+  font-size: 12px;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.icon-action-btn:hover {
+  opacity: 1;
+  color: var(--text-h);
 }

@@ -52,7 +52,7 @@ interface GradeContextType {
 const GradeContext = createContext<GradeContextType | undefined>(undefined);
 
 export function GradeProvider({ children }: { children: ReactNode }) {
-  const [semesters, setSemesters] = useState<Semester[]>([{ id: 1, name: 'Semester 1', courses: [] }]);
+  const [semesters, setSemesters] = useState<Semester[]>([{ id: 1, name: 'Untitled Semester', courses: [] }]);
   const [activeSemesterId, setActiveSemesterId] = useState<number | null>(1);
   const [nextSemesterId, setNextSemesterId] = useState(2);
 

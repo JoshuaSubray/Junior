@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useGradeContext, type Course } from '../../contexts/GradeContext';
 import ClassModal from './ClassModal';
-import RemoveButton from '../common/RemoveButton';
+import Delete from '../common/Delete';
 import Edit from '../common/Edit';
 import './GPA.css';
 
@@ -70,14 +70,14 @@ export default function Entries() {
               <div className="course-grade-chip">
                 <span className="grade-value">{calculateCourseGrade(course)}</span>
               </div>
-              <RemoveButton 
-                className="course-remove-btn"
+              <Delete 
+                className="course-delete-btn"
                 onClick={(e) => {
                   e.stopPropagation();
                   removeCourse(course.id);
                   if (selectedCourseId === course.id) setSelectedCourseId(null);
                 }}
-                title="Remove Class"
+                title="Delete Class"
               />
             </div>
           </div>

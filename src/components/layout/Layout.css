@@ -148,7 +148,7 @@
   width: 100%;
 }
 
-/* Row containing the pencil/rename icon and semester name text. */
+/* Row containing the rename icon and semester name text. */
 .sidebar-name-row {
   display: flex;
   align-items: center;
@@ -157,15 +157,9 @@
   overflow: hidden;
 }
 
-/* Small rename (pencil) button. */
+/* Rename button. */
 .sidebar-rename-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
   color: var(--text-main);
-  opacity: 0.6;
-  padding: 2px 4px;
-  font-size: 12px;
 }
 
 /* Semester name label. */

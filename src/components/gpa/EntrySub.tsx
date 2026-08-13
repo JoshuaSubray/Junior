@@ -1,1 +1,0 @@
-// Sub-Entry row (e.g. lab).

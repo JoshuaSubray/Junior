@@ -1,5 +1,5 @@
 import { type ReactNode, useEffect } from 'react';
-import RemoveButton from './RemoveButton';
+import Delete from './Delete';
 import './Common.css';
 
 interface ModalProps {
@@ -31,7 +31,7 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
       <div className="modal-panel" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2 className="modal-title">{title}</h2>
-          <RemoveButton className="modal-close-btn" onClick={onClose} title="Close Modal" />
+          <Delete className="modal-close-btn" onClick={onClose} title="Close Modal" />
         </div>
         <div className="modal-content">
           {children}
