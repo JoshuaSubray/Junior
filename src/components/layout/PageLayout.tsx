@@ -21,7 +21,7 @@ export default function PageLayout({ currentPage, onNavigate, children }: PageLa
         <Header currentPage={currentPage} onNavigate={onNavigate} />
 
         <div className="app-body">
-          <Sidebar />
+          <Sidebar currentPage={currentPage} onNavigateHome={() => onNavigate('home')} />
 
           <main className="main" id="main">
             {children}

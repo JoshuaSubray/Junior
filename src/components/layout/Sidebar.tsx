@@ -2,9 +2,30 @@ import { useState } from 'react';
 import { useGradeContext } from '../../contexts/GradeContext';
 import Delete from '../common/Delete';
 
-export default function Sidebar() {
+interface SidebarProps {
+  currentPage: 'home' | 'about' | 'guide';
+  onNavigateHome: () => void;
+}
+
+export default function Sidebar({ currentPage, onNavigateHome }: SidebarProps) {
   const { semesters, activeSemesterId, addSemester, updateSemester, removeSemester, setActiveSemester } = useGradeContext();
   const [editingSemesterId, setEditingSemesterId] = useState<number | null>(null);
+
+  const handleReturnToHome = () => {
+    if (currentPage !== 'home') {
+      onNavigateHome();
+    }
+  };
+
+  const handleAddSemester = () => {
+    addSemester();
+    handleReturnToHome();
+  };
+
+  const handleSelectSemester = (semesterId: number) => {
+    setActiveSemester(semesterId);
+    handleReturnToHome();
+  };
 
   return (
     <aside className="semester" id="semester">
@@ -12,7 +33,7 @@ export default function Sidebar() {
       <div className="section-content">
         <div className="sidebar-add-wrapper">
           <button
-            onClick={addSemester}
+            onClick={handleAddSemester}
             className="sidebar-add-btn"
           >
             + Add Semester
@@ -26,7 +47,7 @@ export default function Sidebar() {
             {semesters.map(semester => (
               <div
                 key={semester.id}
-                onClick={() => setActiveSemester(semester.id)}
+                onClick={() => handleSelectSemester(semester.id)}
                 className={`sidebar-item${activeSemesterId === semester.id ? ' active' : ''}`}
               >
                 {editingSemesterId === semester.id ? (
