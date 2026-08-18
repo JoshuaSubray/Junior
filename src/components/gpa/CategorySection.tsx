@@ -23,8 +23,9 @@ export default function CategorySection({ courseId, category }: CategorySectionP
       <div className="category-header">
         <div className="category-label-row">
           <span className="category-label">name</span>
-          <span className="category-label category-label-small">mark</span>
-          <span className="category-label category-label-small">weight</span>
+          <span className="category-label category-label-small">GRADE</span>
+          <span className="category-label category-label-small">WEIGHT</span>
+          <span className="category-label category-label-small">EXTRA</span>
         </div>
 
         <div className="category-title-row">
@@ -115,6 +116,23 @@ export default function CategorySection({ courseId, category }: CategorySectionP
                     ) : (
                       <span className="item-weight-auto">{itemSplitWeight}%</span>
                     )}
+                  </div>
+                  <div className="item-extra-credit-wrapper" title="Extra credit">
+                    <input
+                      type="number"
+                      className="item-extra-credit-input"
+                      value={item.gradeExtra ?? 0}
+                      min="0"
+                      onChange={(e) => {
+                        const value = parseFloat(e.target.value);
+                        updateItem(courseId, category.id, item.id, {
+                          gradeExtra: Number.isNaN(value) ? 0 : Math.max(0, value),
+                        });
+                      }}
+                      placeholder="0"
+                      aria-label="Extra credit"
+                    />
+                    <span className="item-grade-symbol">%</span>
                   </div>
 
                   <Delete

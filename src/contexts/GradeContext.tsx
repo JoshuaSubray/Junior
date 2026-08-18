@@ -4,8 +4,8 @@ export interface Item {
   id: string;
   name: string;
   grade: number;            // Direct percentage.
+  gradeExtra: number;       // Bonus percentage points, separate from the regular grade.
   weightOverride?: number;  // Overrides percentage set by auto-split.
-  isExtraCredit: boolean;   // If true, contributes to grade numerator only (bonus points).
 }
 
 export interface Category {
@@ -115,7 +115,12 @@ export function GradeProvider({ children }: { children: ReactNode }) {
 
   // Category CRUD.
   const addCategory = (courseId: string) => {
-    const newCat: Category = { id: crypto.randomUUID(), name: '', totalWeight: 0, items: [] };
+    const newCat: Category = {
+      id: crypto.randomUUID(),
+      name: '',
+      totalWeight: 0,
+      items: [{ id: crypto.randomUUID(), name: '', grade: 0, gradeExtra: 0 }],
+    };
     modifyCourse(courseId, cats => [...cats, newCat]);
   };
 
@@ -131,7 +136,7 @@ export function GradeProvider({ children }: { children: ReactNode }) {
 
   // Item CRUD.
   const addItem = (courseId: string, categoryId: string) => {
-    const newItem: Item = { id: crypto.randomUUID(), name: '', grade: 0, isExtraCredit: false };
+    const newItem: Item = { id: crypto.randomUUID(), name: '', grade: 0, gradeExtra: 0 };
     modifyCategory(courseId, categoryId, items => [...items, newItem]);
   };
 

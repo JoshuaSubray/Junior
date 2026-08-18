@@ -19,6 +19,7 @@ function calculateCourseGrade(course: Course): string {
       const effectiveWeight = item.weightOverride !== undefined ? item.weightOverride : autoWeight;
       // Grade is a direct percentage. Multiply by weight to get points.
       totalPoints += (item.grade / 100) * effectiveWeight;
+      totalPoints += item.gradeExtra ?? 0;
     });
   });
 

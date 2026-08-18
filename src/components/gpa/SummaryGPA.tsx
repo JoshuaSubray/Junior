@@ -13,6 +13,7 @@ function calculateCourseGradeValue(course: Course): number {
     category.items.forEach((item) => {
       const effectiveWeight = item.weightOverride ?? autoWeight;
       totalPoints += (item.grade / 100) * effectiveWeight;
+      totalPoints += item.gradeExtra ?? 0;
       totalWeight += effectiveWeight;
     });
   });

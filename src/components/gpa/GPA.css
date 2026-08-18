@@ -124,7 +124,7 @@
 
 .category-label-row {
   display: grid;
-  grid-template-columns: minmax(0, 2.8fr) minmax(70px, 0.7fr) minmax(70px, 0.7fr);
+  grid-template-columns: minmax(0, 2.8fr) minmax(70px, 0.75fr) minmax(70px, 0.75fr) minmax(90px, 0.8fr);
   gap: 8px;
   align-items: center;
   padding: 0 0 2px;
@@ -273,7 +273,7 @@
 
 .item-row {
   display: grid;
-  grid-template-columns: minmax(0, 2.8fr) minmax(80px, 0.75fr) minmax(80px, 0.75fr) auto;
+  grid-template-columns: minmax(0, 2.8fr) minmax(80px, 0.75fr) minmax(80px, 0.75fr) minmax(90px, 0.8fr) auto;
   align-items: center;
   gap: 8px;
   background: transparent;
@@ -356,6 +356,27 @@
   border-radius: 6px;
   padding: 6px 8px;
   min-height: 32px;
+}
+
+.item-extra-credit-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 32px;
+  color: var(--text);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.item-extra-credit-input {
+  width: 42px;
+  padding: 0;
+  color: var(--text-h);
+  background: transparent;
+  border: none;
+  text-align: right;
+  outline: none;
 }
 
 .item-delete-btn {
