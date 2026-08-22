@@ -1,0 +1,254 @@
+/* Main application layout container. */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  background: rgba(10, 15, 13, 0.15);
+}
+
+/* Header container stylings. */
+.header {
+  width: 100%;
+  border-bottom: 1px solid var(--border);
+  padding: 24px 32px;
+  background: rgba(14, 22, 19, 0.9);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.header-brand {
+  text-align: left;
+}
+
+.header-title {
+  font-family: 'Minecraftia', sans-serif;
+  font-size: 2.8rem;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -1.5px;
+  color: var(--text-h);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.header-title:hover {
+  opacity: 0.85;
+}
+
+.header-subtitle {
+  font-size: 1.05rem;
+  color: var(--text);
+  margin-top: 6px;
+  margin-bottom: 0;
+}
+
+/* Navbar navigation */
+.navbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  background: transparent;
+  border: 1px solid transparent;
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text);
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+}
+
+.nav-link:hover {
+  color: var(--text-h);
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--border);
+}
+
+.nav-link.active {
+  color: var(--accent);
+  background-color: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Three-column middle section. */
+.app-body {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Semester container. */
+.semester {
+  width: 280px;
+  min-width: 240px;
+  border-right: 1px solid var(--border);
+  padding: 24px;
+  background: rgba(24, 34, 30, 0.82);
+  text-align: left;
+  box-sizing: border-box;
+}
+
+/* Sidebar add-semester button wrapper. */
+.sidebar-add-wrapper {
+  margin-bottom: 16px;
+}
+
+/* Button to add a new semester. */
+.sidebar-add-btn {
+  width: 100%;
+  padding: 8px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-h);
+}
+
+/* List of semester items. */
+.sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Individual semester row. */
+.sidebar-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  gap: 8px;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+}
+
+.sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--accent-border);
+  transform: translateY(-1px);
+}
+
+/* Active/selected semester row. */
+.sidebar-item.active {
+  border: 1px solid var(--accent-border);
+  background: rgba(215, 201, 141, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+/* Inline rename input shown when editing a semester name. */
+.sidebar-rename-input {
+  background: rgba(8, 10, 9, 0.22);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  color: var(--text-main);
+  padding: 4px;
+  font-size: inherit;
+  outline: none;
+  width: 100%;
+}
+
+/* Row containing the rename icon and semester name text. */
+.sidebar-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Rename button. */
+.sidebar-rename-btn {
+  color: var(--text-main);
+}
+
+/* Semester name label. */
+.sidebar-name {
+  color: var(--text-h);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Bold variant for the active semester name. */
+.sidebar-name.active {
+  font-weight: bold;
+}
+
+/* Grades container. */
+.main {
+  flex: 1;
+  padding: 32px;
+  background: rgba(13, 18, 16, 0.2);
+  text-align: left;
+  min-width: 0; /* Ensures flex container does not overflow. */
+  box-sizing: border-box;
+}
+
+/* Advertisements container. */
+.ads {
+  width: 260px;
+  min-width: 220px;
+  border-left: 1px solid var(--border);
+  padding: 24px;
+  background: rgba(24, 34, 30, 0.82);
+  text-align: left;
+  box-sizing: border-box;
+}
+
+/* Footer container. */
+.footer {
+  width: 100%;
+  border-top: 1px solid var(--border);
+  padding: 20px 24px;
+  background: rgba(14, 22, 19, 0.92);
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+/* Responsive adjustments for mobile view. */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+  }
+  
+  .navbar {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .app-body {
+    flex-direction: column;
+  }
+  
+  .semester {
+    width: 100%;
+    border-right: none;
+    border-bottom: 2px solid var(--border);
+  }
+  
+  .ads {
+    width: 100%;
+    border-left: none;
+    border-top: 2px solid var(--border);
+  }
+}

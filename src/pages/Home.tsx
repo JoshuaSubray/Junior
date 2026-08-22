@@ -1,9 +1,11 @@
+import Entries from '../components/gpa/Entries';
+
 export default function Home() {
   return (
     <>
-      <h2 className="section-title">Main</h2>
+      <h2 className="section-title">Classes</h2>
       <div className="section-content">
-        <p>Welcome!</p>
+        <Entries />
       </div>
     </>
   )

@@ -3,8 +3,10 @@ import Header from './Header'
 import Footer from './Footer'
 import Sidebar from './Sidebar'
 import Ads from './Ads'
+import { GradeProvider } from '../../contexts/GradeContext'
+import './Layout.css'
 
-type Page = 'home' | 'about'
+type Page = 'home' | 'about' | 'guide'
 
 interface PageLayoutProps {
   currentPage: Page
@@ -14,20 +16,22 @@ interface PageLayoutProps {
 
 export default function PageLayout({ currentPage, onNavigate, children }: PageLayoutProps) {
   return (
-    <div className="app-container">
-      <Header currentPage={currentPage} onNavigate={onNavigate} />
+    <GradeProvider>
+      <div className="app-container">
+        <Header currentPage={currentPage} onNavigate={onNavigate} />
 
-      <div className="app-body">
-        <Sidebar />
+        <div className="app-body">
+          <Sidebar currentPage={currentPage} onNavigateHome={() => onNavigate('home')} />
 
-        <main className="main" id="main">
-          {children}
-        </main>
+          <main className="main" id="main">
+            {children}
+          </main>
 
-        <Ads />
+          <Ads />
+        </div>
+
+        <Footer />
       </div>
-
-      <Footer />
-    </div>
+    </GradeProvider>
   )
 }
