@@ -154,12 +154,52 @@ interface CompleteGradeEntry extends GradeEntry {
 /**
  * Class comprises of static methods that perform operations on GradeEntry objects or lists of `GradeEntry` objects.
  *
- * `GradeEntry` objects which are "incomplete", i.e they have both null `grade` and null `weight`, are ignored from calculations.
+ * `GradeEntry` objects which are "incomplete", i.e they have null `grade` or null `weight`, are ignored from calculations.
  * 
  * A calculation on an array of `GradeEntry` objects which are all incomplete results in `null` being returned.
  */
 class GradeCalculator {
-    
+    /**
+     * Helper for filtering entries. A complete entry is a `GradeEntry` object with a non-null `grade` and `weight` attribute.
+     */
+    private static isComplete(entry: GradeEntry): entry is CompleteGradeEntry {
+        return entry.getGrade() !== null && entry.getWeight() !== null;
+    }
+
+    /**
+     * Filters a list of entries to only include completed enetries.
+     * 
+     * @param entries An array of `GradeEntry` objects.
+     * @returns An array of `CompleteGradeEntry` objects.
+     */
+    private static getComplete(entries: GradeEntry[]): CompleteGradeEntry[] {
+        return entries.filter(GradeCalculator.isComplete);
+    }
+
+    /**
+     * Helper function returns an object `{ average, weightedSum, sumOfWeights }` calculated from `entries`.
+     */
+    private static getWeightedAverageData(entries: GradeEntry[]): {
+        average: number | null;
+        weightedSum: number;
+        sumOfWeights: number;
+    } {
+        const completedEntries = GradeCalculator.getComplete(entries);
+        if (completedEntries.length === 0) {
+            return { average: null, weightedSum: 0, sumOfWeights: 0 };
+        } 
+        
+        const weightedSum = completedEntries.reduce((accumulator, current) => accumulator + (current.getGrade() * current.getWeight()), 0);
+        const sumOfWeights = completedEntries.reduce((accumulator, current) => accumulator + current.getWeight(), 0);
+
+        if (sumOfWeights === 0) {
+            return { average: 0, weightedSum: weightedSum, sumOfWeights: sumOfWeights};
+        }
+
+        const average = weightedSum / sumOfWeights;
+        return { average: average, weightedSum: weightedSum, sumOfWeights: sumOfWeights };
+    }
+
     /**
     * Calculate the weighted average of `entries`.
     * 
@@ -167,8 +207,9 @@ class GradeCalculator {
     * ```ts
     * const row1 = new GradeEntry("", 80, 50);
     * const row2 = new GradeEntry("", 70, 50);
+    * const row3 = new GradeEntry("Incomplete", null, 80);
     * 
-    * const classArray = [row1, row2];
+    * const classArray = [row1, row2, row3]; // Row 3 does not contribute to the calculation
     * 
     * const average: number = GradeCalculator.getWeightedAverage(classArray);
     * 
@@ -182,28 +223,7 @@ class GradeCalculator {
     *  @returns The weighted average of `entries`.
     */
     public static getWeightedAverage(entries: GradeEntry[]): number | null {
-        const completedEntries = entries.filter(GradeCalculator.isComplete);
-
-        const weightedSum = completedEntries.reduce((accumulator, current) => accumulator + (current.getGrade() * current.getWeight()), 0);
-        const sumOfWeights = completedEntries.reduce((accumulator, current) => accumulator + current.getWeight(), 0);
-
-        if (completedEntries.length === 0) {
-            return null;
-        }
-
-        if (sumOfWeights === 0) {
-            return 0;
-        }
-
-        const average = weightedSum / sumOfWeights;
-        return average;
-    }
-
-    /**
-     * Helper for filtering entries. A complete entry is a `GradeEntry` object with a non-null `grade` and `weight` attribute.
-     */
-    private static isComplete(entry: GradeEntry): entry is CompleteGradeEntry {
-        return entry.getGrade() !== null && entry.getWeight() !== null;
+        return GradeCalculator.getWeightedAverageData(entries).average;
     }
 
    /**
@@ -211,15 +231,19 @@ class GradeCalculator {
     * 
     * @example
     * ```ts
-    *  // Assume the class also has an exam worth 50%.
-    *  // There is no "exam" entry because the grade for the exam is currently unknown in this example.
-    *  const row1 = new GradeEntry("", 70, 25);
-    *  const row2 = new GradeEntry("", 75, 25);
+    *  // The class in the following example has a final exam weighted at 50%.
+    *  const entry1 = new GradeEntry("Entry 1", 70, 25); 
+    *  const entry2 = new GradeEntry("Entry 2", 75, 25);
+    *  const exam = new GradeEntry("Exam", null, 50); 
     *   
-    *  const classArray = [row1, row2];
+    *  const classArray = [entry1, entry2, exam];
     *  
     *  // The following code asks: What grade do I need on the exam, which is weighted at 50%, to get an 80% in the class?
-    *  const examGrade = GradeCalculator.getRequiredAssessmentGrade(50, 80, classArray);
+    *  const examGrade = GradeCalculator.getRequiredAssessmentGrade(
+    *       exam.getWeight()!, 
+    *       80, 
+    *       classArray
+    *  );
     *  
     *  console.log(examGrade);
     *  // Output:
@@ -230,27 +254,51 @@ class GradeCalculator {
     * @param entries An array of `GradeEntry` objects.
     * @returns The grade of the assessment that is required to achieve `targetAverage`.
     */
-    public static getRequiredAssessmentGrade(assessmentWeight: number,  targetAverage: number, entries: GradeEntry[]): number | null {
-        const completedEntries = entries.filter(GradeCalculator.isComplete);
+    public static getRequiredAssessmentGrade(assessmentWeight: number, targetAverage: number, entries: GradeEntry[]): number | null {
+        const { average, sumOfWeights } = GradeCalculator.getWeightedAverageData(entries);
+        if (average === null) return null;
 
-        if (completedEntries.length === 0) {
-            return null;
-        }
-
-        const sumOfWeights = completedEntries.reduce((accumulator, current) => accumulator + current.getWeight()!, 0);
-        const currentAverage = GradeCalculator.getWeightedAverage(entries);
-
+        const currentAverage = average;
+        
         if (assessmentWeight === 0) {
             return 0;
-        }
-
-        if (currentAverage === null) {
-            return null;
         }
 
         const assessmentGrade = ((sumOfWeights * (targetAverage - currentAverage)) + targetAverage * assessmentWeight) 
         / assessmentWeight;
 
         return assessmentGrade;
+    }
+
+
+    /**
+     * Reverse calculates the grade of an assessment given its weight, the new average, and a class array.
+     * @example
+     * 
+     * ```ts
+     * // Scenario: A student recieves their final average in the course from their university, but the university does not show the student their exam grades. The student wishes reverse to calculate their exam grade.
+     * 
+     * const assignment1 = new GradeEntry("Assignment 1", 85, 20);
+     * const assignment2 = new GradeEntry("Assignment 2", 75, 20);
+     * const assignment3 = new GradeEntry("Assignment 3", 90, 20);
+     * const exam = new GradeEntry("Exam", null, 40);
+     * 
+     * const classArray = [assignment1, assignment2, assignment3, exam];
+     * 
+     * const newAverage = 80; // The student's transcript shows they got an 80% in this course.
+     * 
+     * const examGrade = GradeCalculator.getIncompleteGrade(exam.getWeight()!, 80, classArray);
+     * 
+     * console.log(examGrade) 
+     * // Output:
+     * // 75
+     * ```
+     * @param assessmentWeight The weight of the assessment to reverse calculate the grade of.
+     * @param newAverage The new average.
+     * @param entries The array representing the class.
+     * @returns 
+     */
+    public static getIncompleteGrade(assessmentWeight: number, newAverage: number, entries: GradeEntry[]): number | null {
+        return GradeCalculator.getRequiredAssessmentGrade(assessmentWeight, newAverage, entries);
     }
 }
