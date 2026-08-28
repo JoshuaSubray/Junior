@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useGradeContext, type Course } from '../../contexts/GradeContext';
+import { useGradeContext } from '../../contexts/GradeContext';
 import { GradeEntryAdapter } from '../../adapters/gradeEntryAdapter';
 import ClassModal from './ClassModal';
 import Delete from '../common/Delete';
