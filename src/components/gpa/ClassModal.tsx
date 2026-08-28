@@ -1,4 +1,5 @@
 import { useGradeContext, type Course } from '../../contexts/GradeContext';
+import { GradeEntryAdapter } from '../../adapters/gradeEntryAdapter';
 import Modal from '../common/Modal';
 import CategorySection from './CategorySection';
 import './GPA.css';
@@ -13,22 +14,27 @@ export default function ClassModal({ isOpen, onClose, course }: ClassModalProps)
   const { addCategory } = useGradeContext();
 
   const totalWeight = course.categories.reduce((acc, cat) => acc + (cat.totalWeight || 0), 0);
-
+  const courseGrade = GradeEntryAdapter.getCourseGrade(course);
+  const courseLetterGrade = GradeEntryAdapter.getCourseLetterGrade(course);
+  const courseGPA = GradeEntryAdapter.getCourseGPA(course);
+          
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={course.name || 'Untitled Class'}>
       <div className="class-modal-body class-modal-body-simple">
         <div className="class-modal-top-summary">
           <div className="class-modal-stat">
             <span className="class-modal-stat-label">GPA</span>
-            <strong className="class-modal-stat-value">4.0</strong>
+            <strong className="class-modal-stat-value">{courseGPA}</strong>
           </div>
           <div className="class-modal-stat">
             <span className="class-modal-stat-label">AVG</span>
-            <strong className="class-modal-stat-value">85%</strong>
+            <strong className="class-modal-stat-value">
+              {courseGrade === null ? '—' : `${courseGrade.toFixed(2)}%`}
+            </strong>
           </div>
           <div className="class-modal-stat">
             <span className="class-modal-stat-label">Grade</span>
-            <strong className="class-modal-stat-value">A+</strong>
+            <strong className="class-modal-stat-value">{courseLetterGrade}</strong>
           </div>
         </div>
 

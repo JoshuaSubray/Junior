@@ -285,7 +285,7 @@
   display: none;
 }
 
-.item-name-input {
+.item-name-input,.item-weight-input {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -334,6 +334,19 @@
   width: 52px;
   text-align: right;
   outline: none;
+}
+
+.item-weight-input {
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  padding: 0;
+  width: 52px;
+  min-width: 0;
+  text-align: right;
+  outline: none;
+  font: inherit;
+  box-sizing: border-box;
 }
 
 .item-grade-input:hover,

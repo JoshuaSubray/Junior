@@ -17,7 +17,7 @@ export default function CategorySection({ courseId, category }: CategorySectionP
   const itemSplitWeight = category.items.length > 0 
     ? (category.totalWeight / category.items.length).toFixed(2)
     : 0;
-
+    
   return (
     <div className="category-section">
       <div className="category-header">
@@ -111,11 +111,20 @@ export default function CategorySection({ courseId, category }: CategorySectionP
                   </div>
 
                   <div className="item-weight-display">
-                    {item.weightOverride !== undefined ? (
-                      <span className="item-weight-override">{item.weightOverride}%</span>
-                    ) : (
-                      <span className="item-weight-auto">{itemSplitWeight}%</span>
-                    )}
+                   <input
+                      type="number"
+                      className="item-weight-input"
+                      value={item.weightOverride ?? itemSplitWeight}
+                      min="0"
+                      onChange={(e) => {
+                        const value = parseFloat(e.target.value);
+
+                        updateItem(courseId, category.id, item.id, {
+                          weightOverride: Number.isNaN(value) ? 0 : Math.max(0, value),
+                        });
+                      }}
+                    />
+                    <span className="item-grade-symbol">%</span>
                   </div>
                   <div className="item-extra-credit-wrapper" title="Extra credit">
                     <input

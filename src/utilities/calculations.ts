@@ -35,7 +35,7 @@
     incomplete entries that may become complete later.
     
 */
-class GradeEntry {
+export class GradeEntry {
     name: string | null;
     private grade: number | null;
     private weight: number | null;
@@ -158,7 +158,7 @@ interface CompleteGradeEntry extends GradeEntry {
  * 
  * A calculation on an array of `GradeEntry` objects which are all incomplete results in `null` being returned.
  */
-class GradeCalculator {
+export class GradeCalculator {
     /**
      * Helper for filtering entries. A complete entry is a `GradeEntry` object with a non-null `grade` and `weight` attribute.
      */
