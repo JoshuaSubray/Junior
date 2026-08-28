@@ -54,7 +54,7 @@ export class GradeEntryAdapter {
         return GradeEntryAdapter.adaptItemToGradeEntry(item).getGrade();
     }
 
-    public static getCourseGrade(course: Course): number | null {;
+    public static getCourseGrade(course: Course): number | null {
         return GradeEntryAdapter.adaptCourseToGradeEntry(course).getGrade();
     }
 
