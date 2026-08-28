@@ -28,7 +28,7 @@ export default function Entries() {
     <div className="entries-container">
       <div className="course-list">
         {courses.map(course => {
-          const courseGrade = GradeEntryAdapter.getCourseGrade(course)
+          const courseGrade = GradeEntryAdapter.getCourseGrade(course);
 
           return (<div 
             key={course.id} 

@@ -61,12 +61,14 @@ export class GradeEntryAdapter {
     // Placeholder functions for future support of GPA and letter grade conversion in the GradeEntry class.
 
     public static getCourseGPA(course: Course) {
+        console.log(course);
         const courseGPA = "4.0"; 
 
         return courseGPA;      
     }
 
     public static getCourseLetterGrade(course: Course) {
+        console.log(course);
         const letterGrade = "A+";
 
         return letterGrade;
