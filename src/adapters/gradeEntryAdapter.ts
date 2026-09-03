@@ -1,4 +1,5 @@
 import { GradeEntry } from '../utilities/calculations';
+import { gpaPresetMap, letterGradePresetMap } from '../utilities/mappings/gradeMappingPresets';
 import type { Item, Category, Course } from '../contexts/GradeContext';
 
 /**
@@ -58,20 +59,22 @@ export class GradeEntryAdapter {
         return GradeEntryAdapter.adaptCourseToGradeEntry(course).getGrade();
     }
 
-    // Placeholder functions for future support of GPA and letter grade conversion in the GradeEntry class.
+    /**
+     *  Functions below map average percentage values to a GPA and letter grade.
+     */
 
-    public static getCourseGPA(course: Course) {
-        console.log(course);
-        const courseGPA = "4.0"; 
-
-        return courseGPA;      
+    public static getGPA(average: number | null) {
+        if (average != null) {
+            return gpaPresetMap.getStringValue(Math.round(average));
+        }
+        return "—";      
     }
 
-    public static getCourseLetterGrade(course: Course) {
-        console.log(course);
-        const letterGrade = "A+";
-
-        return letterGrade;
+    public static getLetterGrade(average: number | null) {
+        if (average != null) {
+            return letterGradePresetMap.getValue(Math.round(average));
+        }
+        return "—";     
     }
 
 }

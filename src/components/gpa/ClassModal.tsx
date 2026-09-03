@@ -15,8 +15,8 @@ export default function ClassModal({ isOpen, onClose, course }: ClassModalProps)
 
   const totalWeight = course.categories.reduce((acc, cat) => acc + (cat.totalWeight || 0), 0);
   const courseGrade = GradeEntryAdapter.getCourseGrade(course);
-  const courseLetterGrade = GradeEntryAdapter.getCourseLetterGrade(course);
-  const courseGPA = GradeEntryAdapter.getCourseGPA(course);
+  const courseLetterGrade = GradeEntryAdapter.getLetterGrade(courseGrade);
+  const courseGPA = GradeEntryAdapter.getGPA(courseGrade);
           
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={course.name || 'Untitled Class'}>
