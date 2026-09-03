@@ -1,4 +1,4 @@
-import { MappingNotFoundError, OverlappingRangeError } from "./mappingerrors";
+import { MappingNotFoundError, OverlappingRangeError } from "./mappingErrors";
 
 /**
  * Defines a value of type `T` that is mapped to an inclusive range of numbers from `lowerBound` to `upperBound`.

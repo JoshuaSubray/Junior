@@ -1,4 +1,4 @@
-import { InvalidGradeMappingError } from "./mappingerrors";
+import { InvalidGradeMappingError } from "./mappingErrors";
 import { RangeMapping } from "./rangeMapping";
 
 
