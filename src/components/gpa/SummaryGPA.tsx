@@ -11,6 +11,7 @@ function calculateCourseGradeValue(course: Course): number {
     const autoWeight = categoryWeight / category.items.length;
 
     category.items.forEach((item) => {
+      if (item.grade === null) return;
       const effectiveWeight = item.weightOverride ?? autoWeight;
       totalPoints += (item.grade / 100) * effectiveWeight;
       totalPoints += item.gradeExtra ?? 0;

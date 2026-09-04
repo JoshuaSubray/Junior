@@ -41,7 +41,7 @@ export class GradeEntryAdapter {
     private static adaptItemToGradeEntry(item: Item): GradeEntry {
         const itemGradeEntry = new GradeEntry(
             item.name,
-            item.grade + item.gradeExtra,
+            item.grade !== null ? item.grade + item.gradeExtra : null,
             item.weightOverride ?? 0
         ) 
         return itemGradeEntry;

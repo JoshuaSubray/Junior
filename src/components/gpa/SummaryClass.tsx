@@ -2,10 +2,11 @@ import type { Course } from '../../contexts/GradeContext';
 
 function calculateClassAverage(course: Course): number {
   const categoryAverages = course.categories
-    .filter((category) => category.items.length > 0)
+    .filter((category) => category.items.some((item) => item.grade !== null))
     .map((category) => {
-      const itemGrades = category.items.reduce((sum, item) => sum + item.grade, 0);
-      return itemGrades / category.items.length;
+      const completedItems = category.items.filter((item) => item.grade !== null);
+      const itemGrades = completedItems.reduce((sum, item) => sum + (item.grade ?? 0), 0);
+      return itemGrades / completedItems.length;
     });
 
   if (categoryAverages.length === 0) return 0;

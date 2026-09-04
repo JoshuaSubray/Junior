@@ -14,10 +14,10 @@ export default function CategorySection({ courseId, category }: CategorySectionP
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   // Auto-calculated split weight for items in this category.
-  const itemSplitWeight = category.items.length > 0 
+  const itemSplitWeight = category.items.length > 0
     ? (category.totalWeight / category.items.length).toFixed(2)
     : 0;
-    
+
   return (
     <div className="category-section">
       <div className="category-header">
@@ -53,7 +53,7 @@ export default function CategorySection({ courseId, category }: CategorySectionP
 
           <div className="category-weight-row">
             <div className="category-split-weight">
-              {category.items.length > 0 ? `${itemSplitWeight}%` : '0%' }
+              {category.items.length > 0 ? `${itemSplitWeight}%` : '0%'}
             </div>
             <div className="category-weight">
               <input
@@ -62,10 +62,15 @@ export default function CategorySection({ courseId, category }: CategorySectionP
                 value={category.totalWeight}
                 min="0"
                 max="100"
+                onKeyDown={(e) => {
+                  if (e.key === '-' || e.key === 'e' || e.key === 'E') {
+                    e.preventDefault();
+                  }
+                }}
                 onChange={(e) => {
                   let val = parseFloat(e.target.value);
                   if (isNaN(val)) val = 0;
-                  if (val > 100) return;
+                  if (val > 100) val = 100;
                   if (val < 0) val = 0;
                   updateCategory(courseId, category.id, { totalWeight: val });
                 }}
@@ -76,8 +81,8 @@ export default function CategorySection({ courseId, category }: CategorySectionP
           </div>
 
           <div className="category-actions">
-            <Delete 
-              className="category-delete-btn" 
+            <Delete
+              className="category-delete-btn"
               onClick={() => removeCategory(courseId, category.id)}
               title="Delete Category"
             />
@@ -103,25 +108,58 @@ export default function CategorySection({ courseId, category }: CategorySectionP
                     <input
                       type="number"
                       className="item-grade-input"
-                      value={item.grade}
-                      onChange={(e) => updateItem(courseId, category.id, item.id, { grade: parseFloat(e.target.value) || 0 })}
+                      value={item.grade ?? ''}
+                      min="0"
+                      max="100"
+                      onKeyDown={(e) => {
+                        if (e.key === '-' || e.key === 'e' || e.key === 'E') {
+                          e.preventDefault();
+                        }
+                      }}
+                      onChange={(e) => {
+                        const raw = e.target.value.trim();
+                        if (raw === '') {
+                          updateItem(courseId, category.id, item.id, { grade: null });
+                        } else {
+                          const val = parseFloat(raw);
+                          if (isNaN(val)) {
+                            updateItem(courseId, category.id, item.id, { grade: null });
+                          } else {
+                            const clamped = Math.min(100, Math.max(0, val));
+                            updateItem(courseId, category.id, item.id, { grade: clamped });
+                          }
+                        }
+                      }}
                       placeholder="0"
                     />
                     <span className="item-grade-symbol">%</span>
                   </div>
 
                   <div className="item-weight-display">
-                   <input
+                    <input
                       type="number"
                       className="item-weight-input"
                       value={item.weightOverride ?? itemSplitWeight}
                       min="0"
+                      max="100"
+                      onKeyDown={(e) => {
+                        if (e.key === '-' || e.key === 'e' || e.key === 'E') {
+                          e.preventDefault();
+                        }
+                      }}
                       onChange={(e) => {
-                        const value = parseFloat(e.target.value);
-
-                        updateItem(courseId, category.id, item.id, {
-                          weightOverride: Number.isNaN(value) ? 0 : Math.max(0, value),
-                        });
+                        const raw = e.target.value.trim();
+                        if (raw === '') {
+                          updateItem(courseId, category.id, item.id, { weightOverride: undefined });
+                        } else {
+                          const value = parseFloat(raw);
+                          if (isNaN(value)) {
+                            updateItem(courseId, category.id, item.id, { weightOverride: undefined });
+                          } else {
+                            const clamped = Math.min(100, Math.max(0, value));
+                            updateItem(courseId, category.id, item.id, { weightOverride: clamped });
+                          }
+                        }
                       }}
                     />
                     <span className="item-grade-symbol">%</span>
@@ -130,13 +168,23 @@ export default function CategorySection({ courseId, category }: CategorySectionP
                     <input
                       type="number"
                       className="item-extra-credit-input"
-                      value={item.gradeExtra ?? 0}
+                      value={item.gradeExtra === 0 ? '' : item.gradeExtra}
                       min="0"
+                      max="100"
+                      onKeyDown={(e) => {
+                        if (e.key === '-' || e.key === 'e' || e.key === 'E') {
+                          e.preventDefault();
+                        }
+                      }}
                       onChange={(e) => {
-                        const value = parseFloat(e.target.value);
-                        updateItem(courseId, category.id, item.id, {
-                          gradeExtra: Number.isNaN(value) ? 0 : Math.max(0, value),
-                        });
+                        const raw = e.target.value.trim();
+                        const value = parseFloat(raw);
+                        if (isNaN(value)) {
+                          updateItem(courseId, category.id, item.id, { gradeExtra: 0 });
+                        } else {
+                          const clamped = Math.min(100, Math.max(0, value));
+                          updateItem(courseId, category.id, item.id, { gradeExtra: clamped });
+                        }
                       }}
                       placeholder="0"
                       aria-label="Extra credit"
@@ -154,8 +202,8 @@ export default function CategorySection({ courseId, category }: CategorySectionP
             )}
           </div>
 
-          <button 
-            className="category-add-item-btn" 
+          <button
+            className="category-add-item-btn"
             onClick={() => addItem(courseId, category.id)}
           >
             + Add Item

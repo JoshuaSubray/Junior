@@ -285,7 +285,8 @@
   display: none;
 }
 
-.item-name-input,.item-weight-input {
+.item-name-input,
+.item-weight-input {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -523,4 +524,66 @@
   background-color: var(--accent-bg);
   border-color: var(--accent-border);
   color: var(--accent);
+}
+
+/* Semester Summary Banner */
+.semester-summary-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 24px;
+}
+
+.semester-summary-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.semester-summary-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-family: var(--heading);
+  color: var(--text-h);
+}
+
+.semester-summary-subtitle {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.semester-summary-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.summary-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 16px;
+  min-width: 90px;
+}
+
+.summary-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--text);
+  letter-spacing: 0.08em;
+  margin-bottom: 2px;
+}
+
+.summary-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--accent);
+  line-height: 1.1;
 }

@@ -1,9 +1,9 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
 export interface Item {
   id: string;
   name: string;
-  grade: number;            // Direct percentage.
+  grade: number | null;     // Direct percentage, null means unentered/incomplete.
   gradeExtra: number;       // Bonus percentage points, separate from the regular grade.
   weightOverride?: number;  // Overrides percentage set by auto-split.
 }
@@ -51,10 +51,58 @@ interface GradeContextType {
 
 const GradeContext = createContext<GradeContextType | undefined>(undefined);
 
+const STORAGE_KEY = 'junior_grade_calculator_data';
+
+interface StoredData {
+  semesters: Semester[];
+  activeSemesterId: number | null;
+  nextSemesterId: number;
+}
+
+const DEFAULT_SEMESTERS: Semester[] = [{ id: 1, name: 'Untitled Semester', courses: [] }];
+
+function loadInitialData(): StoredData {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed.semesters) && parsed.semesters.length > 0) {
+        return {
+          semesters: parsed.semesters,
+          activeSemesterId: parsed.activeSemesterId ?? parsed.semesters[0].id,
+          nextSemesterId: parsed.nextSemesterId ?? Math.max(...parsed.semesters.map((s: Semester) => s.id), 0) + 1,
+        };
+      }
+    }
+  } catch (err) {
+    console.error('Failed to load grade data from localStorage:', err);
+  }
+  return {
+    semesters: DEFAULT_SEMESTERS,
+    activeSemesterId: 1,
+    nextSemesterId: 2,
+  };
+}
+
 export function GradeProvider({ children }: { children: ReactNode }) {
-  const [semesters, setSemesters] = useState<Semester[]>([{ id: 1, name: 'Untitled Semester', courses: [] }]);
-  const [activeSemesterId, setActiveSemesterId] = useState<number | null>(1);
-  const [nextSemesterId, setNextSemesterId] = useState(2);
+  const [initialData] = useState<StoredData>(loadInitialData);
+  const [semesters, setSemesters] = useState<Semester[]>(initialData.semesters);
+  const [activeSemesterId, setActiveSemesterId] = useState<number | null>(initialData.activeSemesterId);
+  const [nextSemesterId, setNextSemesterId] = useState<number>(initialData.nextSemesterId);
+
+  // Sync state changes to localStorage
+  useEffect(() => {
+    try {
+      const dataToStore: StoredData = {
+        semesters,
+        activeSemesterId,
+        nextSemesterId,
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToStore));
+    } catch (err) {
+      console.error('Failed to save grade data to localStorage:', err);
+    }
+  }, [semesters, activeSemesterId, nextSemesterId]);
 
   // Semester CRUD.
   const addSemester = () => {
@@ -69,8 +117,13 @@ export function GradeProvider({ children }: { children: ReactNode }) {
   };
 
   const removeSemester = (id: number) => {
-    setSemesters(prev => prev.filter(s => s.id !== id));
-    if (activeSemesterId === id) setActiveSemesterId(null);
+    setSemesters(prev => {
+      const updated = prev.filter(s => s.id !== id);
+      if (activeSemesterId === id) {
+        setActiveSemesterId(updated.length > 0 ? updated[0].id : null);
+      }
+      return updated;
+    });
   };
 
   const setActiveSemester = (id: number) => setActiveSemesterId(id);
@@ -119,7 +172,7 @@ export function GradeProvider({ children }: { children: ReactNode }) {
       id: crypto.randomUUID(),
       name: '',
       totalWeight: 0,
-      items: [{ id: crypto.randomUUID(), name: '', grade: 0, gradeExtra: 0 }],
+      items: [{ id: crypto.randomUUID(), name: '', grade: null, gradeExtra: 0 }],
     };
     modifyCourse(courseId, cats => [...cats, newCat]);
   };
@@ -136,7 +189,7 @@ export function GradeProvider({ children }: { children: ReactNode }) {
 
   // Item CRUD.
   const addItem = (courseId: string, categoryId: string) => {
-    const newItem: Item = { id: crypto.randomUUID(), name: '', grade: 0, gradeExtra: 0 };
+    const newItem: Item = { id: crypto.randomUUID(), name: '', grade: null, gradeExtra: 0 };
     modifyCategory(courseId, categoryId, items => [...items, newItem]);
   };
 
