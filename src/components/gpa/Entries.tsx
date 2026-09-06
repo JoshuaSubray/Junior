@@ -4,6 +4,7 @@ import { GradeEntryAdapter } from '../../adapters/gradeEntryAdapter';
 import ClassModal from './ClassModal';
 import Delete from '../common/Delete';
 import Edit from '../common/Edit';
+import AddItemButton from '../common/AddItemButton';
 import './GPA.css';
 
 
@@ -67,9 +68,11 @@ export default function Entries() {
           </div>)
       })}
 
-        <button className="course-row add-course-btn" onClick={addCourse}>
-          + Add Class
-        </button>
+        <AddItemButton
+          label="Add Class"
+          className="add-course-btn"
+          onClick={addCourse}
+        />
       </div>
 
       {selectedCourse && (

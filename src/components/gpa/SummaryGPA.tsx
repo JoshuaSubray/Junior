@@ -1,25 +1,8 @@
 import type { Course } from '../../contexts/GradeContext';
+import { GradeEntryAdapter } from '../../adapters/gradeEntryAdapter';
 
 function calculateCourseGradeValue(course: Course): number {
-  let totalPoints = 0;
-  let totalWeight = 0;
-
-  course.categories.forEach((category) => {
-    if (category.items.length === 0) return;
-
-    const categoryWeight = category.totalWeight ?? 0;
-    const autoWeight = categoryWeight > 0 ? categoryWeight / category.items.length : 0;
-
-    category.items.forEach((item) => {
-      if (item.grade === null) return;
-      const effectiveWeight = item.weightOverride ?? autoWeight;
-      totalPoints += (item.grade / 100) * effectiveWeight;
-      totalPoints += item.gradeExtra ?? 0;
-      totalWeight += effectiveWeight;
-    });
-  });
-
-  return totalWeight > 0 ? (totalPoints / totalWeight) * 100 : 0;
+  return GradeEntryAdapter.getCourseGrade(course) ?? 0;
 }
 
 export default function SummaryGPA({ courses }: { courses: Course[] }) {

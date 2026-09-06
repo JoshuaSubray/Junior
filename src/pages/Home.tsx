@@ -1,9 +1,10 @@
 import { useGradeContext } from '../contexts/GradeContext';
 import Entries from '../components/gpa/Entries';
 import SummaryGPA from '../components/gpa/SummaryGPA';
+import Edit from '../components/common/Edit';
 
 export default function Home() {
-  const { semesters, activeSemesterId } = useGradeContext();
+  const { semesters, activeSemesterId, updateSemester } = useGradeContext();
   const activeSemester = semesters.find((s) => s.id === activeSemesterId);
   const courses = activeSemester?.courses ?? [];
 
@@ -12,7 +13,14 @@ export default function Home() {
       {activeSemester && (
         <div className="semester-summary-banner">
           <div className="semester-summary-info">
-            <h2 className="semester-summary-title">{activeSemester.name || 'Untitled Semester'}</h2>
+            <Edit
+              value={activeSemester.name}
+              onChange={(name) => updateSemester(activeSemester.id, { name })}
+              placeholder="Untitled Semester"
+              className="semester-summary-edit"
+              inputClassName="semester-summary-title-input"
+              stopPropagationOnClick={false}
+            />
             <span className="semester-summary-subtitle">
               {courses.length} {courses.length === 1 ? 'Class' : 'Classes'}
             </span>

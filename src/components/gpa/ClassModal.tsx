@@ -17,7 +17,7 @@ export default function ClassModal({ isOpen, onClose, course }: ClassModalProps)
   const courseGrade = GradeEntryAdapter.getCourseGrade(course);
   const courseLetterGrade = GradeEntryAdapter.getLetterGrade(courseGrade);
   const courseGPA = GradeEntryAdapter.getGPA(courseGrade);
-          
+  
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={course.name || 'Untitled Class'}>
       <div className="class-modal-body class-modal-body-simple">

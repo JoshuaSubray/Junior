@@ -1,11 +1,14 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
+export type ItemTag = 'gradeExtra' | 'exam' | 'dropped';
+
 export interface Item {
   id: string;
   name: string;
   grade: number | null;     // Direct percentage, null means unentered/incomplete.
   gradeExtra: number;       // Bonus percentage points, separate from the regular grade.
   weightOverride?: number;  // Overrides percentage set by auto-split.
+  tags: ItemTag[];          // Active tags on this item.
 }
 
 export interface Category {
@@ -181,7 +184,7 @@ export function GradeProvider({ children }: { children: ReactNode }) {
       id: crypto.randomUUID(),
       name: '',
       totalWeight: null,
-      items: [{ id: crypto.randomUUID(), name: '', grade: null, gradeExtra: 0 }],
+      items: [{ id: crypto.randomUUID(), name: '', grade: null, gradeExtra: 0, tags: [] }],
     };
     modifyCourse(courseId, cats => [...cats, newCat]);
   };
@@ -198,7 +201,7 @@ export function GradeProvider({ children }: { children: ReactNode }) {
 
   // Item CRUD.
   const addItem = (courseId: string, categoryId: string) => {
-    const newItem: Item = { id: crypto.randomUUID(), name: '', grade: null, gradeExtra: 0 };
+    const newItem: Item = { id: crypto.randomUUID(), name: '', grade: null, gradeExtra: 0, tags: [] };
     modifyCategory(courseId, categoryId, items => [...items, newItem]);
   };
 
@@ -238,6 +241,7 @@ export function GradeProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useGradeContext() {
   const context = useContext(GradeContext);
   if (context === undefined) {

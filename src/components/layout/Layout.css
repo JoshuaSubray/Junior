@@ -100,22 +100,6 @@
   box-sizing: border-box;
 }
 
-/* Sidebar add-semester button wrapper. */
-.sidebar-add-wrapper {
-  margin-bottom: 16px;
-}
-
-/* Button to add a new semester. */
-.sidebar-add-btn {
-  width: 100%;
-  padding: 8px;
-  cursor: pointer;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  color: var(--text-h);
-}
-
 /* List of semester items. */
 .sidebar-list {
   display: flex;
@@ -150,31 +134,6 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
-/* Inline rename input shown when editing a semester name. */
-.sidebar-rename-input {
-  background: rgba(8, 10, 9, 0.22);
-  border: 1px solid var(--accent);
-  border-radius: 4px;
-  color: var(--text-main);
-  padding: 4px;
-  font-size: inherit;
-  outline: none;
-  width: 100%;
-}
-
-/* Row containing the rename icon and semester name text. */
-.sidebar-name-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  overflow: hidden;
-}
-
-/* Rename button. */
-.sidebar-rename-btn {
-  color: var(--text-main);
-}
 
 /* Semester name label. */
 .sidebar-name {
@@ -195,7 +154,8 @@
   padding: 32px;
   background: rgba(13, 18, 16, 0.2);
   text-align: left;
-  min-width: 0; /* Ensures flex container does not overflow. */
+  min-width: 0;
+  /* Ensures flex container does not overflow. */
   box-sizing: border-box;
 }
 
@@ -270,7 +230,7 @@
     gap: 16px;
     padding: 20px;
   }
-  
+
   .navbar {
     width: 100%;
     justify-content: flex-start;
@@ -279,13 +239,13 @@
   .app-body {
     flex-direction: column;
   }
-  
+
   .semester {
     width: 100%;
     border-right: none;
     border-bottom: 2px solid var(--border);
   }
-  
+
   .ads {
     width: 100%;
     border-left: none;

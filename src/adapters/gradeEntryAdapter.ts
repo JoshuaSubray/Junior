@@ -11,7 +11,7 @@ export class GradeEntryAdapter {
         const courseEntry = new GradeEntry(
             course.name,
             null,
-            1 // Every course is a one credit course by default, may change this later
+            1 // Every course is a one credit course by default, may change this later.
         );
 
         const categoryGradeEntries = course.categories.map((category: Category) => 
@@ -32,15 +32,19 @@ export class GradeEntryAdapter {
             category.totalWeight ?? 0,
         );
 
-        const itemGradeEntries = category.items.map((item: Item) => GradeEntryAdapter.adaptItemToGradeEntry(item, category));
+        const activeItems = category.items.filter(
+            (item: Item) => !item.tags?.includes('dropped')
+        );
+        const itemGradeEntries = activeItems.map((item: Item) => GradeEntryAdapter.adaptItemToGradeEntry(item, category, activeItems.length));
         itemGradeEntries.forEach((itemGradeEntry: GradeEntry) => (categoryGradeEntry.addSubEntry(itemGradeEntry)));
 
         return categoryGradeEntry;
     }   
 
-    private static adaptItemToGradeEntry(item: Item, category?: Category): GradeEntry {
-        const autoSplitWeight = category && category.totalWeight !== null && category.items.length > 0
-            ? category.totalWeight / category.items.length
+    private static adaptItemToGradeEntry(item: Item, category?: Category, activeItemCount?: number): GradeEntry {
+        const count = activeItemCount ?? (category?.items.filter(i => !i.tags?.includes('dropped')).length ?? 0);
+        const autoSplitWeight = category && category.totalWeight !== null && count > 0
+            ? category.totalWeight / count
             : 0;
 
         const itemGradeEntry = new GradeEntry(
