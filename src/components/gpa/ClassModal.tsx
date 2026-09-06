@@ -13,7 +13,7 @@ interface ClassModalProps {
 export default function ClassModal({ isOpen, onClose, course }: ClassModalProps) {
   const { addCategory } = useGradeContext();
 
-  const totalWeight = course.categories.reduce((acc, cat) => acc + (cat.totalWeight || 0), 0);
+  const totalWeight = course.categories.reduce((acc, cat) => acc + (cat.totalWeight ?? 0), 0);
   const courseGrade = GradeEntryAdapter.getCourseGrade(course);
   const courseLetterGrade = GradeEntryAdapter.getLetterGrade(courseGrade);
   const courseGPA = GradeEntryAdapter.getGPA(courseGrade);

@@ -7,8 +7,8 @@ function calculateCourseGradeValue(course: Course): number {
   course.categories.forEach((category) => {
     if (category.items.length === 0) return;
 
-    const categoryWeight = category.totalWeight || 0;
-    const autoWeight = categoryWeight / category.items.length;
+    const categoryWeight = category.totalWeight ?? 0;
+    const autoWeight = categoryWeight > 0 ? categoryWeight / category.items.length : 0;
 
     category.items.forEach((item) => {
       if (item.grade === null) return;

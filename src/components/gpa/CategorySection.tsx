@@ -14,9 +14,10 @@ export default function CategorySection({ courseId, category }: CategorySectionP
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   // Auto-calculated split weight for items in this category.
-  const itemSplitWeight = category.items.length > 0
-    ? (category.totalWeight / category.items.length).toFixed(2)
-    : 0;
+  const splitWeightValue = category.totalWeight ?? 0;
+  const itemSplitWeight = category.items.length > 0 && splitWeightValue > 0
+    ? (splitWeightValue / category.items.length).toFixed(2)
+    : '0.00';
 
   return (
     <div className="category-section">
@@ -53,26 +54,31 @@ export default function CategorySection({ courseId, category }: CategorySectionP
 
           <div className="category-weight-row">
             <div className="category-split-weight">
-              {category.items.length > 0 ? `${itemSplitWeight}%` : '0%'}
+              {category.items.length > 0 && splitWeightValue > 0 ? `${itemSplitWeight}%` : '0%' }
             </div>
             <div className="category-weight">
               <input
                 type="number"
                 className="category-weight-input"
-                value={category.totalWeight}
+                value={category.totalWeight ?? 0}
                 min="0"
                 max="100"
+                onFocus={(e) => {
+                  if (category.totalWeight === 0 || category.totalWeight === null) {
+                    e.target.select();
+                  }
+                }}
                 onKeyDown={(e) => {
                   if (e.key === '-' || e.key === 'e' || e.key === 'E') {
                     e.preventDefault();
                   }
                 }}
                 onChange={(e) => {
-                  let val = parseFloat(e.target.value);
-                  if (isNaN(val)) val = 0;
-                  if (val > 100) val = 100;
-                  if (val < 0) val = 0;
-                  updateCategory(courseId, category.id, { totalWeight: val });
+                  const raw = e.target.value.trim();
+                  const parsed = raw === '' ? 0 : parseFloat(raw);
+                  const value = Number.isNaN(parsed) ? 0 : parsed;
+                  const clamped = Math.min(100, Math.max(0, value));
+                  updateCategory(courseId, category.id, { totalWeight: clamped });
                 }}
                 placeholder="0"
               />

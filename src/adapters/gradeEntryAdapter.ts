@@ -29,20 +29,24 @@ export class GradeEntryAdapter {
         const categoryGradeEntry = new GradeEntry(
             category.name,
             null,
-            50, // Category weights set to 50% by default, change to category.totalWeight later 
+            category.totalWeight ?? 0,
         );
 
-        const itemGradeEntries = category.items.map((item: Item) => GradeEntryAdapter.adaptItemToGradeEntry(item));
+        const itemGradeEntries = category.items.map((item: Item) => GradeEntryAdapter.adaptItemToGradeEntry(item, category));
         itemGradeEntries.forEach((itemGradeEntry: GradeEntry) => (categoryGradeEntry.addSubEntry(itemGradeEntry)));
 
         return categoryGradeEntry;
     }   
 
-    private static adaptItemToGradeEntry(item: Item): GradeEntry {
+    private static adaptItemToGradeEntry(item: Item, category?: Category): GradeEntry {
+        const autoSplitWeight = category && category.totalWeight !== null && category.items.length > 0
+            ? category.totalWeight / category.items.length
+            : 0;
+
         const itemGradeEntry = new GradeEntry(
             item.name,
             item.grade !== null ? item.grade + item.gradeExtra : null,
-            item.weightOverride ?? 0
+            item.weightOverride ?? autoSplitWeight
         ) 
         return itemGradeEntry;
     }

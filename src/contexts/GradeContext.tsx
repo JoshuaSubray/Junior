@@ -11,7 +11,7 @@ export interface Item {
 export interface Category {
   id: string;
   name: string;
-  totalWeight: number;  // Percentage of the course's final grade this category is worth.
+  totalWeight: number | null;  // Percentage of the course's final grade this category is worth.
   items: Item[];
 }
 
@@ -30,6 +30,7 @@ export interface Semester {
 interface GradeContextType {
   semesters: Semester[];
   activeSemesterId: number | null;
+  resetData: () => void;
   // Semester CRUD.
   addSemester: () => void;
   updateSemester: (id: number, updates: Partial<Semester>) => void;
@@ -128,6 +129,14 @@ export function GradeProvider({ children }: { children: ReactNode }) {
 
   const setActiveSemester = (id: number) => setActiveSemesterId(id);
 
+  const resetData = () => {
+    const freshSemesters = DEFAULT_SEMESTERS;
+    setSemesters(freshSemesters);
+    setActiveSemesterId(freshSemesters[0].id);
+    setNextSemesterId(2);
+    localStorage.removeItem(STORAGE_KEY);
+  };
+
   // Shared helpers for nested updates.
   const modifyActiveSemester = (fn: (courses: Course[]) => Course[]) => {
     setSemesters(prev => prev.map(s =>
@@ -171,7 +180,7 @@ export function GradeProvider({ children }: { children: ReactNode }) {
     const newCat: Category = {
       id: crypto.randomUUID(),
       name: '',
-      totalWeight: 0,
+      totalWeight: null,
       items: [{ id: crypto.randomUUID(), name: '', grade: null, gradeExtra: 0 }],
     };
     modifyCourse(courseId, cats => [...cats, newCat]);
@@ -208,6 +217,7 @@ export function GradeProvider({ children }: { children: ReactNode }) {
       value={{
         semesters,
         activeSemesterId,
+        resetData,
         addSemester,
         updateSemester,
         removeSemester,
