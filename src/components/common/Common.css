@@ -12,7 +12,7 @@
 }
 
 .modal-panel {
-  background: rgba(18, 27, 23, 0.96);
+  background: var(--surface-modal);
   border: 1px solid var(--border);
   border-radius: 12px;
   width: 90%;
@@ -102,7 +102,7 @@
   justify-content: center;
   gap: 6px;
   width: 100%;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--surface-subtle);
   border: 1px dashed var(--border);
   border-radius: 8px;
   color: var(--text);
@@ -115,7 +115,7 @@
 }
 
 .add-item-btn:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-hover);
   color: var(--text-h);
   border-color: var(--text-h);
 }

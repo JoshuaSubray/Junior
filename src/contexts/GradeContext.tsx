@@ -34,6 +34,7 @@ interface GradeContextType {
   semesters: Semester[];
   activeSemesterId: number | null;
   resetData: () => void;
+  loadData: (dataStr: string) => void;
   // Semester CRUD.
   addSemester: () => void;
   updateSemester: (id: number, updates: Partial<Semester>) => void;
@@ -140,6 +141,22 @@ export function GradeProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem(STORAGE_KEY);
   };
 
+  const loadData = (dataStr: string) => {
+    try {
+      const parsed = JSON.parse(dataStr);
+      if (Array.isArray(parsed.semesters) && parsed.semesters.length > 0) {
+        setSemesters(parsed.semesters);
+        setActiveSemesterId(parsed.activeSemesterId ?? parsed.semesters[0].id);
+        setNextSemesterId(parsed.nextSemesterId ?? Math.max(...parsed.semesters.map((s: Semester) => s.id), 0) + 1);
+      } else {
+        alert('Invalid save data format.');
+      }
+    } catch (err) {
+      alert('Failed to parse save data.');
+      console.error(err);
+    }
+  };
+
   // Shared helpers for nested updates.
   const modifyActiveSemester = (fn: (courses: Course[]) => Course[]) => {
     setSemesters(prev => prev.map(s =>
@@ -221,6 +238,7 @@ export function GradeProvider({ children }: { children: ReactNode }) {
         semesters,
         activeSemesterId,
         resetData,
+        loadData,
         addSemester,
         updateSemester,
         removeSemester,

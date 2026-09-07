@@ -11,7 +11,7 @@
   padding: 12px 16px;
   border: 1px solid var(--border);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.018);
+  background: var(--surface-row);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
@@ -20,7 +20,7 @@
   transform: translateY(-1px);
   box-shadow: var(--shadow);
   border-color: var(--accent-border);
-  background: rgba(215, 201, 141, 0.04);
+  background: var(--surface-accent);
 }
 
 .course-row-left {
@@ -31,7 +31,7 @@
 }
 
 .course-title-input {
-  background: rgba(0, 0, 0, 0.14);
+  background: var(--surface-input);
   border: 1px solid transparent;
   border-radius: 6px;
   color: var(--text-h);
@@ -46,7 +46,7 @@
 .course-title-input:focus,
 .course-title-input:hover {
   border-color: var(--border);
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--surface-contrast);
   outline: none;
 }
 
@@ -71,7 +71,7 @@
 .course-grade-chip {
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.025);
+  background: var(--surface-chip);
   padding: 6px 12px;
   border-radius: 6px;
   border: 1px solid var(--border);
@@ -94,7 +94,7 @@
 
 .category-section {
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-subtle);
   border-radius: 10px;
   padding: 10px 12px 0;
 }
@@ -102,7 +102,11 @@
 .category-items {
   margin-left: 20px;
   padding-left: 14px;
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 10px;
 }
 
 .category-header {
@@ -185,7 +189,7 @@
 }
 
 .category-name-input {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--surface-subtle);
   border: 1px solid transparent;
   border-radius: 6px;
   color: var(--text-h);
@@ -200,7 +204,7 @@
 .category-name-input:hover,
 .category-name-input:focus {
   border-color: var(--border);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-hover);
   outline: none;
 }
 
@@ -211,9 +215,9 @@
   border-radius: 12px;
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--accent, #d7c98d);
-  background: rgba(215, 201, 141, 0.12);
-  border: 1px solid rgba(215, 201, 141, 0.25);
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border-soft);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -240,7 +244,7 @@
   gap: 6px;
   font-size: 0.9rem;
   color: var(--text);
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--surface-subtle);
   border: 1px solid transparent;
   border-radius: 6px;
   padding: 6px 8px;
@@ -261,13 +265,6 @@
   border: none;
 }
 
-.category-items {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  margin-bottom: 10px;
-}
-
 .category-empty-text {
   font-size: 0.9rem;
   color: var(--text);
@@ -282,7 +279,7 @@
   gap: 8px;
   background: transparent;
   padding: 10px 0 10px 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--border-subtle);
 }
 
 .item-number {
@@ -291,7 +288,7 @@
 
 .item-name-input,
 .item-weight-input {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--surface-subtle);
   border: 1px solid var(--border);
   border-radius: 6px;
   color: var(--text-h);
@@ -325,7 +322,7 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--surface-subtle);
   border: 1px solid transparent;
   border-radius: 6px;
   padding: 6px 8px;
@@ -369,7 +366,7 @@
   justify-content: center;
   font-size: 0.87rem;
   color: var(--text);
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--surface-subtle);
   border: 1px solid transparent;
   border-radius: 6px;
   padding: 6px 8px;
@@ -404,14 +401,14 @@
 }
 
 .item-tag-pill--exam {
-  background: rgba(251, 191, 36, 0.15);
-  color: #fbbf24;
+  background: var(--warning-bg);
+  color: var(--warning);
   border: 1px solid rgba(251, 191, 36, 0.3);
 }
 
 .item-tag-pill--extra-credit {
   background: rgba(16, 185, 129, 0.13);
-  color: #10b981;
+  color: var(--success);
   border: 1px solid rgba(16, 185, 129, 0.28);
 }
 
@@ -494,13 +491,13 @@
   gap: 8px;
   padding: 4px 0 6px 8px;
   border-top: 1px dashed rgba(16, 185, 129, 0.2);
-  background: rgba(16, 185, 129, 0.04);
+  background: var(--success-bg);
   border-radius: 0 0 6px 6px;
 }
 
 .item-extra-credit-label {
   font-size: 0.72rem;
-  color: #10b981;
+  color: var(--success);
   letter-spacing: 0.04em;
   flex: 1;
 }
@@ -528,7 +525,7 @@
   padding: 10px 0 12px;
   background-color: transparent;
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--border-subtle);
   border-radius: 0;
   color: var(--text);
   cursor: pointer;
@@ -556,9 +553,9 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
   padding: 10px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-subtle);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--surface-subtle);
 }
 
 .class-modal-stat {
@@ -631,7 +628,7 @@
 }
 
 .weight-value.perfect-weight {
-  color: #10b981;
+  color: var(--success);
 }
 
 .class-modal-add-btn {
@@ -658,7 +655,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 20px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--surface-subtle);
   border: 1px solid var(--border);
   border-radius: 10px;
   margin-bottom: 24px;
@@ -684,7 +681,7 @@
 }
 
 .semester-summary-title-input {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--surface-subtle);
   border: 1px solid var(--border);
   border-radius: 6px;
   color: var(--text-h);
@@ -699,7 +696,7 @@
 .semester-summary-title-input:focus,
 .semester-summary-title-input:hover {
   border-color: var(--accent-border);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-hover);
 }
 
 .semester-summary-subtitle {
@@ -717,7 +714,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--surface-contrast);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 8px 16px;

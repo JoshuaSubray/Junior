@@ -12,14 +12,11 @@
   --text-main: #dfe9df;
   --text-h: #f5f0e3;
   --bg: #101a16;
-  --bg-panel: rgba(20, 31, 27, 0.92);
-  --bg-soft: rgba(28, 40, 35, 0.82);
   --border: rgba(245, 240, 227, 0.14);
   --code-bg: rgba(255, 255, 255, 0.035);
   --accent: #d7c98d;
   --accent-bg: rgba(215, 201, 141, 0.12);
   --accent-border: rgba(215, 201, 141, 0.42);
-  --social-bg: rgba(255, 255, 255, 0.03);
   --shadow: rgba(0, 0, 0, 0.28) 0 18px 32px;
 
   --sans: 'Segoe UI', system-ui, sans-serif;

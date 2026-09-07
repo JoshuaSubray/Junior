@@ -12,7 +12,7 @@
   width: 100%;
   border-bottom: 1px solid var(--border);
   padding: 24px 32px;
-  background: rgba(14, 22, 19, 0.9);
+  background: var(--surface-header);
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
@@ -95,7 +95,7 @@
   min-width: 240px;
   border-right: 1px solid var(--border);
   padding: 24px;
-  background: rgba(24, 34, 30, 0.82);
+  background: var(--surface-panel);
   text-align: left;
   box-sizing: border-box;
 }
@@ -115,14 +115,14 @@
   padding: 12px;
   border: 1px solid var(--border);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--surface-subtle);
   cursor: pointer;
   gap: 8px;
   transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
 }
 
 .sidebar-item:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-hover);
   border-color: var(--accent-border);
   transform: translateY(-1px);
 }
@@ -165,7 +165,7 @@
   min-width: 220px;
   border-left: 1px solid var(--border);
   padding: 24px;
-  background: rgba(24, 34, 30, 0.82);
+  background: var(--surface-panel);
   text-align: left;
   box-sizing: border-box;
 }
@@ -175,7 +175,7 @@
   width: 100%;
   border-top: 1px solid var(--border);
   padding: 20px 24px;
-  background: rgba(14, 22, 19, 0.92);
+  background: var(--surface-footer);
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -199,7 +199,7 @@
   height: 36px;
   border: 1px solid var(--border);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--surface-subtle);
   color: var(--text-h);
   cursor: pointer;
   transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
@@ -208,13 +208,55 @@
 .footer-reset-btn:hover {
   transform: translateY(-1px);
   border-color: var(--accent-border);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-hover);
 }
 
 .footer-reset-icon {
-  display: inline-block;
-  font-size: 1.15rem;
-  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+}
+
+.footer-settings-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.footer-settings-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.footer-settings-item {
+  background: transparent;
+  border: none;
+  color: var(--text-h);
+  padding: 8px 12px;
+  text-align: left;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+}
+
+.footer-settings-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.footer-settings-item.danger {
+  color: var(--danger);
+}
+
+.footer-settings-item.danger:hover {
+  background: var(--danger-bg);
 }
 
 .footer p {

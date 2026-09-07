@@ -44,7 +44,9 @@ export default function Sidebar({ currentPage, onNavigateHome }: SidebarProps) {
                 className="sidebar-delete-btn"
                 onClick={(e) => {
                   e.stopPropagation();
-                  removeSemester(semester.id);
+                  if (window.confirm(`Are you sure you want to delete "${semester.name}"?`)) {
+                    removeSemester(semester.id);
+                  }
                 }} 
                 title="Delete Semester"
               />

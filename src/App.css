@@ -1,3 +1,26 @@
+/* Shared design tokens used across component stylesheets. */
+:root {
+  --surface-panel: rgba(24, 34, 30, 0.82);
+  --surface-header: rgba(14, 22, 19, 0.9);
+  --surface-footer: rgba(14, 22, 19, 0.92);
+  --surface-modal: rgba(18, 27, 23, 0.96);
+  --surface-subtle: rgba(255, 255, 255, 0.02);
+  --surface-row: rgba(255, 255, 255, 0.018);
+  --surface-chip: rgba(255, 255, 255, 0.025);
+  --surface-hover: rgba(255, 255, 255, 0.04);
+  --surface-input: rgba(0, 0, 0, 0.14);
+  --surface-contrast: rgba(0, 0, 0, 0.2);
+  --surface-accent: rgba(215, 201, 141, 0.04);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --accent-border-soft: rgba(215, 201, 141, 0.25);
+  --danger: #ff6b6b;
+  --danger-bg: rgba(255, 107, 107, 0.1);
+  --success: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.04);
+  --warning: #fbbf24;
+  --warning-bg: rgba(251, 191, 36, 0.15);
+}
+
 /* Shared page content styles (used by About, Guide, etc.) */
 .section-title {
   font-family: var(--heading);
