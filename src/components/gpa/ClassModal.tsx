@@ -1,5 +1,5 @@
 import { useGradeContext, type Course } from '../../contexts/GradeContext';
-import { GradeEntryAdapter } from '../../adapters/gradeEntryAdapter';
+import { getCourseGradeData } from '../../utilities/gradeData';
 import Modal from '../common/Modal';
 import CategorySection from './CategorySection';
 import './GPA.css';
@@ -14,10 +14,8 @@ export default function ClassModal({ isOpen, onClose, course }: ClassModalProps)
   const { addCategory } = useGradeContext();
 
   const totalWeight = course.categories.reduce((acc, cat) => acc + (cat.totalWeight ?? 0), 0);
-  const courseGrade = GradeEntryAdapter.getCourseGrade(course);
-  const courseLetterGrade = GradeEntryAdapter.getLetterGrade(courseGrade);
-  const courseGPA = GradeEntryAdapter.getGPA(courseGrade);
-  
+  const {courseGrade, courseLetterGrade, courseGPA } = getCourseGradeData(course);
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={course.name || 'Untitled Class'}>
       <div className="class-modal-body class-modal-body-simple">
@@ -29,7 +27,7 @@ export default function ClassModal({ isOpen, onClose, course }: ClassModalProps)
           <div className="class-modal-stat">
             <span className="class-modal-stat-label">AVG</span>
             <strong className="class-modal-stat-value">
-              {courseGrade === null ? '—' : `${courseGrade.toFixed(2)}%`}
+              {courseGrade}
             </strong>
           </div>
           <div className="class-modal-stat">

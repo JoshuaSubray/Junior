@@ -1,5 +1,4 @@
-import { GradeEntry } from '../utilities/calculations';
-import { gpaPresetMap, letterGradePresetMap } from '../utilities/mappings/gradeMappingPresets';
+import { GradeEntry } from '../utilities/calculations/gradeEntry';
 import type { Item, Category, Course } from '../contexts/GradeContext';
 
 /**
@@ -66,23 +65,4 @@ export class GradeEntryAdapter {
     public static getCourseGrade(course: Course): number | null {
         return GradeEntryAdapter.adaptCourseToGradeEntry(course).getGrade();
     }
-
-    /**
-     *  Functions below map average percentage values to a GPA and letter grade.
-     */
-
-    public static getGPA(average: number | null) {
-        if (average != null) {
-            return gpaPresetMap.getStringValue(Math.round(average));
-        }
-        return "—";      
-    }
-
-    public static getLetterGrade(average: number | null) {
-        if (average != null) {
-            return letterGradePresetMap.getValue(Math.round(average));
-        }
-        return "—";     
-    }
-
 }
