@@ -135,7 +135,7 @@ export default function CategorySection({ courseId, category }: CategorySectionP
               <input
                 type="number"
                 className="category-weight-input"
-                value={category.totalWeight ?? 0}
+                value={category.totalWeight ?? ''}
                 min="0"
                 max="100"
                 onFocus={(e) => {
@@ -150,7 +150,11 @@ export default function CategorySection({ courseId, category }: CategorySectionP
                 }}
                 onChange={(e) => {
                   const raw = e.target.value.trim();
-                  const parsed = raw === '' ? 0 : parseInt(raw, 10);
+                  if (raw === '') {
+                    updateCategory(courseId, category.id, { totalWeight: null });
+                    return;
+                  }
+                  const parsed = parseInt(raw, 10);
                   const value = Number.isNaN(parsed) ? 0 : parsed;
                   const clamped = Math.min(100, Math.max(0, value));
                   updateCategory(courseId, category.id, { totalWeight: clamped });
@@ -228,7 +232,7 @@ export default function CategorySection({ courseId, category }: CategorySectionP
                       <input
                         type="number"
                         className="item-weight-input"
-                        value={item.weightOverride ?? itemSplitWeight}
+                        value={item.weightOverride ?? (splitWeightValue > 0 ? itemSplitWeight : '')}
                         min="0"
                         max="100"
                         onKeyDown={(e) => {
@@ -250,6 +254,7 @@ export default function CategorySection({ courseId, category }: CategorySectionP
                             }
                           }
                         }}
+                        placeholder="0"
                         disabled={isDropped}
                       />
                       <span className="item-grade-symbol">%</span>
