@@ -1,1 +1,0 @@
-// Reset all save data confirmation.

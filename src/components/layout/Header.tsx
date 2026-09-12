@@ -10,9 +10,19 @@ export default function Header({ currentPage, onNavigate }: HeaderProps) {
     <header className="header" id="header">
       <div className="header-brand">
         <h1 className="header-title" onClick={() => onNavigate('home')}>
-          JUNIOR
+          JUNIOR: GRADE CALCULATOR
         </h1>
-        <p className="header-subtitle">a grade calculator project by <strong>Rushi Parmar</strong> and <strong>Joshua Subray</strong>.</p>
+        <p className="header-subtitle">Project JR By:</p>
+        <p className="header-subtitle">
+          <a href="https://www.linkedin.com/in/joshuasubray/" target="_blank" rel="noreferrer">
+            <strong>Joshua Subray</strong>
+          </a>{' '}(The <strong>J</strong> in <strong>J</strong>R)
+        </p>
+        <p className="header-subtitle">
+          <a href="https://www.linkedin.com/in/rushi-parmar2005/" target="_blank" rel="noreferrer">
+            <strong>Rushi Parmar</strong>
+          </a>{' '}(The <strong>R</strong> in J<strong>R</strong>)
+        </p>
       </div> 
       <nav className="navbar" id="navbar">
         <button
