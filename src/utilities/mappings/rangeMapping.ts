@@ -1,4 +1,4 @@
-import { MappingNotFoundError, OverlappingRangeError } from "./mappingErrors";
+import { MappingNotFoundError, OverlappingRangeError, InvalidValueRangeError } from "./mappingErrors";
 
 /**
  * Defines a value of type `T` that is mapped to an inclusive range of numbers from `lowerBound` to `upperBound`.
@@ -90,9 +90,15 @@ export class RangeMapping<T> {
      * 
      * @param newRange The new range definition to be added.
      * @throws `OverlappingRangeError` if the new range definition causes overlapping within the existing collection.
+     * @throws `InvalidValueRangeError` if the new range has a greater lower bound than upper bound.
      */
     public addRange(newRange: ValueRange<T>) {
         const { upperBound: newUpper, lowerBound: newLower } = newRange;
+        
+        // Upper bound must be greater than or equal to lower bound
+        if (newUpper < newLower) {
+            throw new InvalidValueRangeError(`Upper bound (${newUpper}) is smaller than the lower bound (${newLower}).`);
+        }
 
         // Trivial push
         if (this.ranges.length === 0) {

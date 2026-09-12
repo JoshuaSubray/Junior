@@ -1,5 +1,5 @@
 import { useGradeContext, type Course } from '../../contexts/GradeContext';
-import { getCourseGradeData } from '../../utilities/gradeData';
+import { getCourseGradeData } from '../../utilities/gradeService';
 import Modal from '../common/Modal';
 import CategorySection from './CategorySection';
 import './GPA.css';
@@ -22,17 +22,17 @@ export default function ClassModal({ isOpen, onClose, course }: ClassModalProps)
         <div className="class-modal-top-summary">
           <div className="class-modal-stat">
             <span className="class-modal-stat-label">GPA</span>
-            <strong className="class-modal-stat-value">{courseGPA}</strong>
+            <strong className="class-modal-stat-value">{courseGPA !== null ? courseGPA : "—"}</strong>
           </div>
           <div className="class-modal-stat">
             <span className="class-modal-stat-label">AVG</span>
             <strong className="class-modal-stat-value">
-              {courseGrade}
+              {courseGrade !== null ? courseGrade : "—"}
             </strong>
           </div>
           <div className="class-modal-stat">
             <span className="class-modal-stat-label">Grade</span>
-            <strong className="class-modal-stat-value">{courseLetterGrade}</strong>
+            <strong className="class-modal-stat-value">{courseLetterGrade !== null ? courseLetterGrade : "—" }</strong>
           </div>
         </div>
 
