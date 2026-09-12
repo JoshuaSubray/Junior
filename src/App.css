@@ -49,3 +49,50 @@
   font-weight: 500;
   margin: 24px 0 8px 0;
 }
+
+.updates-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.patch-note {
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.patch-note:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.patch-note-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.patch-note-header .page-sub-heading {
+  margin-top: 0;
+}
+
+.patch-note-date {
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.patch-note-changes {
+  margin: 0;
+  padding-left: 24px;
+}
+
+@media (max-width: 600px) {
+  .patch-note-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
