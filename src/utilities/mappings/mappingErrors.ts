@@ -12,6 +12,13 @@ export class OverlappingRangeError extends Error {
     }
 }
 
+export class InvalidValueRangeError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name="InvalidValueRangeError"
+    }
+}
+
 export class InvalidGradeMappingError extends Error {
     constructor(message: string) {
         super(message);

@@ -1,5 +1,3 @@
-import { GradeEntryAdapter } from "../../adapters/gradeEntryAdapter";
-import { type Semester, type Course } from "../../contexts/GradeContext";
 import { GPAMap } from "../mappings/gradeMapping";
 
 /**
@@ -24,24 +22,12 @@ export class GPACalculator {
         return this.gpaMap.getStringValue(Math.round(percentage));
     }
 
-    public getSessionalGPA(courses: Course[]): number | null {
-        const averages = courses.map(course => GradeEntryAdapter.getCourseGrade(course)).filter((grade) => grade !== null);
+    public getAverageGPA(percentages: number[]): number | null {
+        const len = percentages.length;
+        if (len === 0) {
+            return null;
+        }
 
-        if (averages.length === 0) return null;
-
-        const sessionalGPA = averages.reduce((accumulator, current) => accumulator + this.getGPAFromPercentage(current), 0) / averages.length;
-
-        return sessionalGPA;
-    }
-
-    public getCGPA(semesters: Semester[]): number | null {
-        const semesterGPAs = semesters.map(semester => this.getSessionalGPA(semester.courses)).filter(semester => semester !== null);
-
-        if (semesterGPAs.length === 0) return null;
-        
-        const CGPA = semesterGPAs.reduce((accumulator, current) => accumulator + current, 0) / semesterGPAs.length;
-
-        return CGPA;
-
+        return percentages.reduce((accumulator, current) => accumulator + this.getGPAFromPercentage(current), 0) / len;
     }
 }
