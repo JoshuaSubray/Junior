@@ -4,13 +4,15 @@ import PageLayout from './components/layout/PageLayout'
 import Home from './pages/Home'
 import About from './pages/About'
 import Guide from './pages/Guide'
+import Updates from './pages/Updates'
 
-type Page = 'home' | 'about' | 'guide'
+type Page = 'home' | 'about' | 'guide' | 'updates'
 
 const pages: Record<Page, ReactElement> = {
   home: <Home />,
   about: <About />,
   guide: <Guide />,
+  updates: <Updates />,
 }
 
 function App() {

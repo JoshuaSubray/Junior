@@ -3,7 +3,7 @@ import Delete from '../common/Delete';
 import AddItemButton from '../common/AddItemButton';
 
 interface SidebarProps {
-  currentPage: 'home' | 'about' | 'guide';
+  currentPage: 'home' | 'about' | 'guide' | 'updates';
   onNavigateHome: () => void;
 }
 
