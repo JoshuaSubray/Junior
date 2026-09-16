@@ -6,7 +6,7 @@ import Ads from './Ads'
 import { GradeProvider } from '../../contexts/GradeContext'
 import './Layout.css'
 
-type Page = 'home' | 'about' | 'guide'
+type Page = 'home' | 'about' | 'guide' | 'updates'
 
 interface PageLayoutProps {
   currentPage: Page
