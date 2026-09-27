@@ -2,7 +2,7 @@ import { type ReactNode } from 'react'
 import Header from './Header'
 import Footer from './Footer'
 import Sidebar from './Sidebar'
-import Ads from './Ads'
+// import Ads from './Ads'
 import { GradeProvider } from '../../contexts/GradeContext'
 import './Layout.css'
 
@@ -27,7 +27,7 @@ export default function PageLayout({ currentPage, onNavigate, children }: PageLa
             {children}
           </main>
 
-          <Ads />
+          {/* <Ads /> */}
         </div>
 
         <Footer />
